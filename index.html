@@ -58,6 +58,16 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 .result-head span{font-size:10px;color:#847692;text-transform:uppercase;letter-spacing:.12em}
 .share-action{display:none;width:100%;margin-top:14px;background:#25d366;color:#07150c;border-radius:14px;padding:13px 16px;font-weight:800}
 .share-action.visible{display:block}
+.unveiled-reading{display:none;margin-top:18px;border:1px solid rgba(216,180,106,.45);border-radius:18px;padding:16px;background:linear-gradient(180deg,rgba(19,13,32,.96),rgba(9,6,17,.98));box-shadow:inset 0 0 28px rgba(111,70,150,.08)}
+.unveiled-reading.visible{display:block}
+.unveiled-reading h3{font-family:Georgia,serif;font-weight:500;color:var(--gold);margin:0 0 6px;text-align:center}
+.unveiled-reading .energy{text-align:center;color:#cfc5d8;font-size:12px;margin-bottom:13px}
+.unveiled-reading .message{color:var(--text);line-height:1.55;font-size:13px;margin:0 0 13px}
+.unveiled-reading .meaning-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.unveiled-reading .meaning{border:1px solid rgba(53,39,78,.9);border-radius:12px;padding:9px;background:rgba(8,5,15,.35)}
+.unveiled-reading .meaning b{display:block;color:var(--gold);font-size:11px;margin-bottom:3px}
+.unveiled-reading .meaning span{display:block;color:#c5bacf;font-size:11px;line-height:1.4}
+@media(max-width:520px){.unveiled-reading .meaning-grid{grid-template-columns:1fr}}
 .empty-oracle{padding:26px 10px}
 .empty-oracle .orb{font-size:35px;margin-bottom:7px}
 .empty-oracle b{display:block;font-family:Georgia,serif;font-size:18px;margin-bottom:5px}.empty-oracle span{color:var(--muted);font-size:13px}
@@ -101,6 +111,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 <div class="nine-title" id="nineTitle" style="display:none"><h2>✨ Tirada de 9 cartas</h2></div>
 <div class="cards empty-oracle" id="cards"><div style="grid-column:1/-1;text-align:center"><div class="orb">✦</div><b>Tu lectura aparecerá aquí</b><span>Cuando estés listo, pulsa “Revelar mi lectura”.</span></div></div>
 <button class="share-action" id="share">💬 Compartir mi tirada por WhatsApp</button>
+<div class="unveiled-reading" id="unveiledReading"></div>
 </section>
 <section class="panel" style="display:none"><h2>Los 78 Arcanos</h2><div class="filters"></div><div class="gallery" id="gallery"></div></section>
 <section class="panel source">
@@ -124,8 +135,28 @@ function simpleCrossDraw(selected){const box=document.getElementById('cards');bo
 function celticDraw(selected){const box=document.getElementById('cards');box.className='celtic-wrap';box.innerHTML='<div class="celtic"></div>';const grid=box.firstElementChild,add=(idx,cls)=>{const s=document.createElement('div');s.className='cslot '+cls;s.innerHTML='<div class="pos">'+positions[10][idx]+'</div>'+cardHTML(selected[idx]);grid.appendChild(s);bindCard(s,selected[idx])};add(2,'p3');const cross=document.createElement('div');cross.className='cross';grid.appendChild(cross);[0,1].forEach(idx=>{const s=document.createElement('div');s.className='cslot';s.innerHTML='<div class="pos">'+positions[10][idx]+'</div>'+cardHTML(selected[idx]);cross.appendChild(s);bindCard(s,selected[idx])});add(4,'p5');add(3,'p4');add(5,'p6');const side=document.createElement('div');side.className='side';grid.appendChild(side);[6,7,8,9].forEach(idx=>{const s=document.createElement('div');s.className='cslot';s.innerHTML='<div class="pos">'+positions[10][idx]+'</div>'+cardHTML(selected[idx]);side.appendChild(s);bindCard(s,selected[idx])})}
 const spreadDescriptions={1:'Una carta para una reflexión breve del momento.',3:'Tres cartas para explorar una pregunta concreta.',5:'Una lectura de situación, obstáculo, base, consejo y resultado.',2:'Dos cartas para observar las energías de cuerpo y mente.',9:'Nueve cartas para una visión amplia de tu situación.',10:'Una lectura profunda de 10 posiciones y diferentes influencias.',12:'Doce cartas para explorar áreas importantes de tu presente y futuro.'};
 function updateSpreadDescription(){const n=+document.getElementById('spread').value;document.getElementById('spreadDescription').textContent=spreadDescriptions[n]||''}
+const unveiledInterpretations={
+ 'Cuatro de Espadas':{
+  energy:'Pausa · Recuperación · Silencio · Reflexión',
+  message:'Hay una etapa en la que el alma pide detenerse. No todo debe resolverse inmediatamente. El retiro permite recuperar fuerza y observar aquello que antes no podías ver con claridad.',
+  love:'Distancia temporal, necesidad de sanar o dejar que una situación emocional se calme antes de decidir.',
+  money:'Pausa financiera. Revisar, reorganizar y evitar movimientos impulsivos.',
+  work:'Descanso después de un periodo de presión. Recuperar energía antes del siguiente movimiento.',
+  spirit:'Silencio, meditación, introspección y escucha de la intuición.',
+  warning:'No confundas descanso con estancamiento. La pausa tiene un propósito: recuperar fuerzas para volver a actuar.',
+  reversed:'Inquietud, agotamiento, pensamientos que no se detienen o dificultad para aceptar que necesitas descansar.'
+ }
+};
+function showUnveiledReading(card){
+ const box=document.getElementById('unveiledReading');
+ const data=unveiledInterpretations[card.name];
+ if(!data){box.classList.remove('visible');box.innerHTML='';return}
+ box.innerHTML='<h3>✦ Interpretación ESOTERIC · Unveiled</h3><div class="energy">'+data.energy+'</div><p class="message">'+data.message+'</p><div class="meaning-grid"><div class="meaning"><b>❤️ Amor</b><span>'+data.love+'</span></div><div class="meaning"><b>💰 Dinero</b><span>'+data.money+'</span></div><div class="meaning"><b>💼 Trabajo</b><span>'+data.work+'</span></div><div class="meaning"><b>🔮 Espiritualidad</b><span>'+data.spirit+'</span></div><div class="meaning"><b>⚠️ Advertencia</b><span>'+data.warning+'</span></div><div class="meaning"><b>↕️ Invertida</b><span>'+data.reversed+'</span></div></div>';
+ box.classList.add('visible');
+}
 function draw(){
  const n=+document.getElementById('spread').value;
+ document.getElementById('unveiledReading').classList.remove('visible');
  const btn=document.getElementById('draw');
  btn.classList.add('loading');
  btn.textContent='✦ Barajando…';
@@ -138,6 +169,7 @@ function draw(){
   else if(n===5)simpleCrossDraw(last);
   else normalDraw(last,n);
   document.getElementById('resultStatus').textContent=n+' cartas reveladas';
+  showUnveiledReading(last.length===1?last[0]:last.find(c=>c.name==='Cuatro de Espadas'));
   document.getElementById('share').classList.add('visible');
   btn.classList.remove('loading');
   btn.textContent='🔮 Revelar otra vez';
