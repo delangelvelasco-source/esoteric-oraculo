@@ -4,7 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>ESOTERIC · Guía Espiritual</title>
-<meta name="description" content="Oráculo digital ESOTERIC con los 78 arcanos del tarot Rider-Waite-Smith.">
+<meta name="description" content="ESOTERIC · Guía Espiritual. Explora tiradas de tarot y los 78 arcanos en una experiencia digital elegante y envolvente.">
+<meta name="theme-color" content="#0a0712">
+<meta property="og:title" content="ESOTERIC · Guía Espiritual">
+<meta property="og:description" content="Explora tu tirada y descubre el simbolismo de las cartas.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="esoteric-eye.webp">
+<link rel="icon" href="esoteric-eye.webp" type="image/webp">
 <style>
 :root{--bg:#090612;--panel:#151024;--gold:#d8b46a;--text:#f7f2e8;--muted:#b8aec9;--line:#35274e}
 *{box-sizing:border-box}html,body{max-width:100%;overflow-x:hidden}body{margin:0;background:radial-gradient(circle at 50% -10%,#30204d 0,#100a1b 42%,#090612 80%);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
@@ -21,26 +27,78 @@ label{display:block;color:var(--gold);font-weight:700;margin:0 0 8px}textarea,se
 .source{font-size:12px;color:var(--muted);line-height:1.5}.filters,.gallery{display:none}.modal{position:fixed;inset:0;background:rgba(0,0,0,.88);display:none;align-items:center;justify-content:center;padding:20px;z-index:10}.modal.open{display:flex}.modal img{max-height:88vh;max-width:92vw;border-radius:12px;pointer-events:none;user-select:none;-webkit-user-select:none}.modal button{position:fixed;top:calc(env(safe-area-inset-top) + 18px);right:18px;z-index:99999;background:#fff;color:#111;font-size:22px;padding:6px 14px;min-width:56px;min-height:48px;display:flex;align-items:center;justify-content:center;cursor:pointer;pointer-events:auto;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
 @media(max-width:700px){main{padding-left:10px;padding-right:10px}.panel{padding:14px}.nine{gap:10px 6px}.nine .nslot{padding:8px 3px 7px;border-radius:14px}.nine .nslot .card{width:100%;max-width:112px}.nine .nslot .pos{font-size:8px;min-height:21px}.nine .nslot .name{font-size:9px;margin-top:4px}.three-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.three-grid .slot{min-width:0}.three-grid .card{width:100%}.three-grid .pos{font-size:8px;white-space:nowrap}.three-grid .name{font-size:9px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.future-grid{grid-template-columns:repeat(2,1fr);gap:18px 10px}.future-grid .card{width:100%}.nine{gap:16px 7px}.nine .nslot .card{width:100%}.nine .nslot .pos{font-size:8px;min-height:22px}.celtic{width:100%;grid-template-columns:1fr 1.35fr 1fr .95fr;grid-template-rows:160px 185px 160px;gap:5px}.cslot{width:100%}.cslot .card{width:78px;max-width:78px}.celtic .cross{width:100%;height:175px}.celtic .cross .cslot{width:100%}.celtic .cross .cslot:first-child .card{width:88px;max-width:88px}.celtic .cross .cslot:nth-child(2){transform:translate(8px,6px) rotate(90deg)}.celtic .side{grid-column:4;grid-row:1 / span 3;display:flex;flex-direction:column;justify-content:center;gap:3px}.celtic .side .cslot{width:100%}.celtic .side .cslot .card{width:62px;max-width:62px}.celtic .side .cslot .pos{font-size:8px;min-height:18px;margin-bottom:2px}.cslot .pos{font-size:8px;min-height:18px}.name{font-size:9px;margin-top:3px}.thirteen{width:100%;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto auto auto auto;gap:7px}.thirteen .tslot{width:100%}.thirteen .tslot .card{width:72px;max-width:72px}.thirteen .tslot .pos{font-size:8px;min-height:18px}.thirteen .top4{grid-column:2;grid-row:1}.thirteen .top5{grid-column:3;grid-row:1}.thirteen .left10{grid-column:1;grid-row:2}.thirteen .left11{grid-column:2;grid-row:2}.thirteen .present{grid-column:3;grid-row:2}.thirteen .present2{grid-column:3;grid-row:2;position:relative;z-index:3;transform:translate(5px,5px) rotate(90deg)}.thirteen .present2 .pos,.thirteen .present2 .name{transform:rotate(-90deg)}.thirteen .right12{grid-column:4;grid-row:2}.thirteen .right13{grid-column:4;grid-row:3}.thirteen .against{grid-column:2 / span 2;grid-row:3;width:100%}.thirteen .against .tslot{width:100%}.thirteen .against .card{width:100px;max-width:100px}.thirteen .immediate6{grid-column:2;grid-row:4}.thirteen .immediate7{grid-column:3;grid-row:4}.thirteen .distant8{grid-column:2;grid-row:5}.thirteen .distant9{grid-column:3;grid-row:5}}
 @media(max-width:430px){.nine{gap:8px 4px}.nine .nslot{padding:7px 2px 6px;border-radius:12px}.nine .nslot .card{max-width:100px}.nine .nslot .pos{font-size:7px;min-height:19px}.nine .nslot .name{font-size:8px}header{padding:14px 12px 16px}header .logo-eye{width:112px;height:112px;margin-bottom:9px}header .brand{font-size:clamp(31px,9vw,42px);letter-spacing:.17em}header h1{font-size:23px;margin-top:7px}header p{font-size:15px}.nine{gap:14px 5px}.nine .nslot .pos{font-size:7px;min-height:20px}.nine .nslot .card{width:100%}.celtic{grid-template-columns:1fr 1.25fr 1fr .85fr;grid-template-rows:155px 175px 155px;gap:3px}.cslot .card{width:68px;max-width:68px}.celtic .cross{height:165px}.celtic .cross .cslot:first-child .card{width:78px;max-width:78px}.celtic .side .cslot .card{width:54px;max-width:54px}.celtic .side .cslot .pos{font-size:7px;min-height:15px}.cslot .pos{font-size:7px;min-height:15px}.name{font-size:8px}.thirteen .tslot .card{width:62px;max-width:62px}}
+
+/* ESOTERIC UX polish */
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.32;background-image:radial-gradient(circle at 15% 20%,rgba(216,180,106,.7) 0 1px,transparent 1.5px),radial-gradient(circle at 80% 12%,rgba(255,255,255,.55) 0 1px,transparent 1.5px),radial-gradient(circle at 70% 72%,rgba(216,180,106,.4) 0 1px,transparent 1.5px),radial-gradient(circle at 25% 82%,rgba(255,255,255,.35) 0 1px,transparent 1.5px);background-size:170px 190px,230px 220px,190px 210px,260px 250px;z-index:0}
+header,main{position:relative;z-index:1}
+header{padding-top:22px}
+header .eyebrow{font-size:11px;letter-spacing:.32em;color:#8f7ca8;text-transform:uppercase;margin:0 0 10px}
+header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
+.hero-copy{max-width:620px;margin:12px auto 0}
+.hero-copy strong{color:var(--text)}
+.panel{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+.intro-panel{text-align:center;padding:20px 18px}
+.intro-panel h2{font-family:Georgia,serif;font-weight:500;margin:0 0 7px;font-size:clamp(21px,5vw,28px)}
+.intro-panel p{margin:0;color:var(--muted);line-height:1.5;font-size:14px}
+.field-title{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.field-title small{color:#827394;font-weight:500}
+#question{min-height:52px;height:52px;resize:none}
+.spread-wrap{margin-top:14px}
+.spread-description{margin:9px 2px 0;color:var(--muted);font-size:12px;line-height:1.4;min-height:17px}
+.actions{margin-top:16px}
+#draw{min-height:50px;font-size:16px;box-shadow:0 8px 25px rgba(216,180,106,.16);transition:transform .18s ease,box-shadow .18s ease,filter .18s ease}
+#draw:hover{filter:brightness(1.07);box-shadow:0 10px 30px rgba(216,180,106,.23)}
+#draw:active{transform:scale(.98)}
+#draw.loading{pointer-events:none;filter:brightness(.9)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:16px}
+.step{border:1px solid rgba(53,39,78,.9);border-radius:15px;padding:11px 8px;background:rgba(8,5,15,.28)}
+.step b{display:block;color:var(--gold);font-size:16px;margin-bottom:3px}.step span{display:block;color:#a99db8;font-size:10px;line-height:1.3}
+.result-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+.result-head h2{font-family:Georgia,serif;font-weight:500;margin:0;font-size:20px}
+.result-head span{font-size:10px;color:#847692;text-transform:uppercase;letter-spacing:.12em}
+.share-action{display:none;width:100%;margin-top:14px;background:#25d366;color:#07150c;border-radius:14px;padding:13px 16px;font-weight:800}
+.share-action.visible{display:block}
+.empty-oracle{padding:26px 10px}
+.empty-oracle .orb{font-size:35px;margin-bottom:7px}
+.empty-oracle b{display:block;font-family:Georgia,serif;font-size:18px;margin-bottom:5px}.empty-oracle span{color:var(--muted);font-size:13px}
+@media(max-width:520px){.steps{grid-template-columns:1fr 1fr 1fr}.step{padding:9px 5px}.step span{font-size:9px}.intro-panel{padding:17px 14px}}
 </style>
 </head>
 <body>
-<header><img class="logo-eye" src="esoteric-eye.webp" alt="ESOTERIC — símbolo del ojo"><div class="brand">ESOTERIC</div><h1>Guía Espiritual</h1><p>Oráculo digital para tus preguntas</p></header>
+<header>
+<p class="eyebrow">ORÁCULO DIGITAL · 78 ARCANOS</p>
+<img class="logo-eye" src="esoteric-eye.webp" alt="ESOTERIC — símbolo del ojo">
+<div class="brand">ESOTERIC</div>
+<h1>Guía Espiritual</h1>
+<div class="hero-copy"><p><strong>Haz tu pregunta. Elige una tirada. Revela las cartas.</strong><br>Una experiencia de tarot inspirada en el simbolismo de los arcanos.</p></div>
+</header>
 <main>
+<section class="panel intro-panel">
+<h2>🔮 Abre tu lectura</h2>
+<p>Concéntrate en aquello que quieres explorar y elige el tipo de tirada que más se adapte a tu consulta.</p>
+</section>
 <section class="panel">
-<label for="question">Nombre</label>
-<textarea id="question"></textarea>
+<div class="field-title"><label for="question">Tu nombre</label><small>Opcional</small></div>
+<input id="question" type="text" maxlength="60" autocomplete="name" placeholder="Escribe tu nombre">
+<div class="spread-wrap">
+<label for="spread">Elige tu tirada</label>
 <select id="spread" aria-label="Tipo de tirada">
 <option value="1">Carta del Día · 1 carta</option><option value="3">Pregunta Concreta · 3 cartas</option><option value="5">Cruz Simple · 5 cartas</option><option value="2">Cuerpo y Mente · 2 cartas</option><option value="9">Tirada de 9 cartas</option><option value="10">Cruz Celta · 10 cartas</option><option value="12">Futuro Próximo · 12 cartas</option><option value="13">Lectura de las 13 cartas</option>
 </select>
-<div class="actions"><button id="draw">🔮 Barajar y hacer la tirada</button></div>
-<div class="hint">La interpretación será por WhatsApp.</div>
+<div class="spread-description" id="spreadDescription">Una carta para una reflexión breve del momento.</div>
+<div class="actions"><button id="draw">🔮 Revelar mi lectura</button></div>
+<div class="steps"><div class="step"><b>01</b><span>Elige tu tirada</span></div><div class="step"><b>02</b><span>Baraja y revela</span></div><div class="step"><b>03</b><span>Comparte tu lectura</span></div></div>
+<div class="hint">La lectura es simbólica y de carácter espiritual.</div>
+</div>
 </section>
 <section class="panel" id="result">
+<div class="result-head"><h2>Tu lectura</h2><span id="resultStatus">Esperando una tirada</span></div>
 <div class="celtic-title" id="celticTitle" style="display:none"><h2>🔮 Cruz Celta</h2></div>
 <div class="future-title" id="futureTitle" style="display:none"><h2>✨ Tirada del Futuro Próximo</h2></div>
 <div class="thirteen-title" id="thirteenTitle" style="display:none"><h2>✨ Lectura de las 13 cartas</h2></div>
 <div class="nine-title" id="nineTitle" style="display:none"><h2>✨ Tirada de 9 cartas</h2></div>
-<div class="cards" id="cards"><div class="hint" style="grid-column:1/-1">Tu tirada aparecerá aquí.</div></div>
+<div class="cards empty-oracle" id="cards"><div style="grid-column:1/-1;text-align:center"><div class="orb">✦</div><b>Tu lectura aparecerá aquí</b><span>Cuando estés listo, pulsa “Revelar mi lectura”.</span></div></div>
+<button class="share-action" id="share">💬 Compartir mi tirada por WhatsApp</button>
 </section>
 <section class="panel" style="display:none"><h2>Los 78 Arcanos</h2><div class="filters"></div><div class="gallery" id="gallery"></div></section>
 <section class="panel source">El sitio no ofrece diagnóstico médico, financiero o legal.</section>
@@ -57,8 +115,11 @@ function normalDraw(selected,n){const box=document.getElementById('cards');box.c
 function simpleCrossDraw(selected){const box=document.getElementById('cards');box.className='simple-cross';box.innerHTML='';const classes=['simple-center','simple-obstacle','simple-left','simple-right','simple-bottom'];selected.forEach((card,i)=>{const s=document.createElement('div');s.className='slot '+classes[i];s.innerHTML='<div class="pos">'+positions[5][i]+'</div>'+cardHTML(card);box.appendChild(s);bindCard(s,card)})}
 function celticDraw(selected){const box=document.getElementById('cards');box.className='celtic-wrap';box.innerHTML='<div class="celtic"></div>';const grid=box.firstElementChild,add=(idx,cls)=>{const s=document.createElement('div');s.className='cslot '+cls;s.innerHTML='<div class="pos">'+positions[10][idx]+'</div>'+cardHTML(selected[idx]);grid.appendChild(s);bindCard(s,selected[idx])};add(2,'p3');const cross=document.createElement('div');cross.className='cross';grid.appendChild(cross);[0,1].forEach(idx=>{const s=document.createElement('div');s.className='cslot';s.innerHTML='<div class="pos">'+positions[10][idx]+'</div>'+cardHTML(selected[idx]);cross.appendChild(s);bindCard(s,selected[idx])});add(4,'p5');add(3,'p4');add(5,'p6');const side=document.createElement('div');side.className='side';grid.appendChild(side);[6,7,8,9].forEach(idx=>{const s=document.createElement('div');s.className='cslot';s.innerHTML='<div class="pos">'+positions[10][idx]+'</div>'+cardHTML(selected[idx]);side.appendChild(s);bindCard(s,selected[idx])})}
 function thirteenDraw(selected){const box=document.getElementById('cards');box.className='thirteen-wrap';box.innerHTML='<div class="thirteen"></div>';const grid=box.firstElementChild,add=(idx,cls)=>{const s=document.createElement('div');s.className='tslot '+cls;s.innerHTML='<div class="pos">'+positions[13][idx]+'</div>'+cardHTML(selected[idx]);grid.appendChild(s);bindCard(s,selected[idx])};add(3,'top4');add(4,'top5');add(9,'left10');add(10,'left11');add(0,'present');add(1,'present2');add(11,'right12');add(12,'right13');add(2,'against');add(5,'immediate6');add(6,'immediate7');add(7,'distant8');add(8,'distant9')}
-function draw(){const n=+document.getElementById('spread').value;last=shuffled().slice(0,n).map(makeCard);document.getElementById('celticTitle').style.display=n===10?'block':'none';document.getElementById('futureTitle').style.display=n===12?'block':'none';document.getElementById('thirteenTitle').style.display=n===13?'block':'none';document.getElementById('nineTitle').style.display=n===9?'block':'none';if(n===10)celticDraw(last);else if(n===13)thirteenDraw(last);else if(n===5)simpleCrossDraw(last);else normalDraw(last,n);document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'})}
-function openModal(src,name,reversed=false){const img=document.getElementById('modalImg');img.src=src;img.alt=name+(reversed?' — invertida':' — al derecho');img.style.transform=reversed?'rotate(180deg)':'none';document.getElementById('modal').classList.add('open')}function closeModal(){const m=document.getElementById('modal');const img=document.getElementById('modalImg');m.classList.remove('open');img.style.transform='none';img.src='';document.body.style.overflow=''}document.getElementById('draw').onclick=draw;document.getElementById('again').onclick=draw;const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const spreadDescriptions={1:'Una carta para una reflexión breve del momento.',3:'Tres cartas para explorar una pregunta concreta.',5:'Una lectura de situación, obstáculo, base, consejo y resultado.',2:'Dos cartas para observar las energías de cuerpo y mente.',9:'Nueve cartas para una visión amplia de tu situación.',10:'Una lectura profunda de 10 posiciones y diferentes influencias.',12:'Doce cartas para explorar áreas importantes de tu presente y futuro.',13:'Una lectura amplia de 13 posiciones y evolución.'};
+function updateSpreadDescription(){const n=+document.getElementById('spread').value;document.getElementById('spreadDescription').textContent=spreadDescriptions[n]||''}
+function draw(){const n=+document.getElementById('spread').value;const btn=document.getElementById('draw');btn.classList.add('loading');btn.textContent='✦ Barajando…';setTimeout(()=>{last=shuffled().slice(0,n).map(makeCard);document.getElementById('celticTitle').style.display=n===10?'block':'none';document.getElementById('futureTitle').style.display=n===12?'block':'none';document.getElementById('thirteenTitle').style.display=n===13?'block':'none';document.getElementById('nineTitle').style.display=n===9?'block':'none';if(n===10)celticDraw(last);else if(n===13)thirteenDraw(last);else if(n===5)simpleCrossDraw(last);else normalDraw(last,n);document.getElementById('resultStatus').textContent=n+' cartas reveladas';document.getElementById('share').classList.add('visible');btn.classList.remove('loading');btn.textContent='🔮 Revelar otra vez';document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});},520)}
+function openModal(src,name,reversed=false){const img=document.getElementById('modalImg');img.src=src;img.alt=name+(reversed?' — invertida':' — al derecho');img.style.transform=reversed?'rotate(180deg)':'none';document.getElementById('modal').classList.add('open')}function closeModal(){const m=document.getElementById('modal');const img=document.getElementById('modalImg');m.classList.remove('open');img.style.transform='none';img.src='';document.body.style.overflow=''}document.getElementById('draw').onclick=draw;document.getElementById('spread').addEventListener('change',updateSpreadDescription);updateSpreadDescription();
+document.getElementById('share').addEventListener('click',()=>{if(!last.length)return;const name=document.getElementById('question').value.trim();const n=+document.getElementById('spread').value;const title=document.getElementById('spread').selectedOptions[0].textContent;const lines=last.map((c,i)=>`${i+1}. ${c.name}${c.reversed?' — invertida':''}`).join('\n');const msg=`🔮 ESOTERIC · Mi lectura\n\n${name?'Nombre: '+name+'\n':''}Tirada: ${title}\n\n${lines}\n\nQuiero solicitar mi interpretación espiritual.`;window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener,noreferrer')});const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
 </body>
 </html>
