@@ -169,7 +169,7 @@ function draw(){
   else if(n===5)simpleCrossDraw(last);
   else normalDraw(last,n);
   document.getElementById('resultStatus').textContent=n+' cartas reveladas';
-  showUnveiledReading(last.length===1?last[0]:last.find(c=>c.name==='Cuatro de Espadas'));
+  if(last.length===1){showUnveiledReading(last[0]);}else{const reading=document.getElementById('unveiledReading');reading.classList.remove('visible');reading.innerHTML='';}
   document.getElementById('share').classList.add('visible');
   btn.classList.remove('loading');
   btn.textContent='🔮 Revelar otra vez';
