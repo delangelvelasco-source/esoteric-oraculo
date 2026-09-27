@@ -530,7 +530,7 @@ async function checkOraculoAccess(spreadNumber){
 
   const token=getAuthToken();
   if(token){
-    return await apiJson('/access?spread_id='+encodeURIComponent(spreadType));
+    return await apiJson('/access?spread_type='+encodeURIComponent(spreadType));
   }
 
   const userId=getEsotericUserId();
