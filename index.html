@@ -285,12 +285,12 @@ function refreshContextualInterpretations(){
   const d=unveiledInterpretations[name];
   if(!d) return;
   const focus=(d.energy||name).replace(/ · /g,', ');
-  d.love='Observa cómo '+focus.toLowerCase()+' influye en el vínculo. La clave está en la comunicación, los límites, la reciprocidad y lo que realmente necesitas.';
-  d.money='En recursos y estabilidad, '+focus.toLowerCase()+' señala qué conviene revisar: administrar mejor, cerrar un ciclo, aprovechar una oportunidad o construir una base más sólida.';
-  d.work='En trabajo y proyectos, '+focus.toLowerCase()+' orienta sobre qué conviene iniciar, ordenar, sostener, corregir o desarrollar para avanzar.';
-  d.spirit='En el plano espiritual, '+focus.toLowerCase()+' muestra un aprendizaje que puede ayudarte a comprender mejor el momento que estás viviendo.';
-  d.warning='El desafío de '+name+' aparece cuando '+focus.toLowerCase()+' se lleva al exceso o se evita mirar lo que la carta está señalando. Observa el contexto antes de actuar.';
-  d.reversed='Si aparece invertida, la energía de '+name+' puede sentirse bloqueada, retrasada, exagerada o difícil de integrar. Revisa qué parte necesita equilibrio.';
+  d.love='En amor, '+focus.toLowerCase()+' puede reflejar necesidades de seguridad, reciprocidad y acuerdos. Observa qué necesita el vínculo en este momento.';
+  d.money='En dinero, '+focus.toLowerCase()+' invita a revisar recursos, estabilidad y decisiones prácticas. Observa qué puedes administrar, cerrar o fortalecer.';
+  d.work='En trabajo, '+focus.toLowerCase()+' señala el aspecto del proceso que conviene organizar, sostener o desarrollar para avanzar.';
+  d.spirit='En espiritualidad, '+focus.toLowerCase()+' señala el aprendizaje interno que puede ayudarte a comprender el momento presente.';
+  d.warning='Observa si '+focus.toLowerCase()+' está siendo llevado al exceso o si estás evitando atender lo que la carta señala.';
+  d.reversed='Invertida, la energía de '+name+' puede sentirse bloqueada, retrasada, exagerada o difícil de integrar. Revisa qué necesita equilibrio.';
  });
 }
 refreshContextualInterpretations();
@@ -316,8 +316,8 @@ function buildIntegratedReading(cards){
  const firstData=unveiledInterpretations[first];
  const lastData=unveiledInterpretations[lastCard];
  const personalMessage = cards.length===1
-   ? (firstData?.message||'')+' En esta consulta, observa cómo esta energía se relaciona con tu situación concreta y qué acción consciente puedes tomar.'
-   : (firstData?.message||'')+' Después, observa cómo '+lastCard+' modifica o completa el proceso. La lectura cobra sentido al relacionar las cartas entre sí.';
+   ? 'Observa cómo la energía de '+first+' se manifiesta en tu situación concreta. Identifica qué aspecto pide atención y qué acción consciente puedes tomar.'
+   : 'Observa cómo se relacionan '+names.join(' y ')+'. Identifica qué energía abre el proceso, cuál lo modifica y qué aprendizaje queda al final.';
  return {q,questionLine,energies,majors,reversed,conclusion,personalMessage};
 }
 function showUnveiledReading(cardOrCards){
