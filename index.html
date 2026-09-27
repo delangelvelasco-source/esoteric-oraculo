@@ -285,11 +285,10 @@ function refreshContextualInterpretations(){
   const d=unveiledInterpretations[name];
   if(!d) return;
   const focus=(d.energy||name).replace(/ · /g,', ');
-  const base=d.message||('La energía de '+name+' invita a observar el proceso que está activo en la consulta.');
-  d.love='En amor, '+base+' Observa qué necesita el vínculo: comunicación, límites, reciprocidad o una decisión consciente.';
-  d.money='En dinero y recursos, '+base+' Revisa qué acción concreta puede mejorar la estabilidad, administrar recursos o aprovechar una oportunidad.';
-  d.work='En trabajo y proyectos, '+base+' Identifica qué conviene iniciar, ordenar, sostener, corregir o desarrollar para avanzar.';
-  d.spirit='En espiritualidad, '+base+' La clave es reconocer qué aprendizaje interno está mostrando esta carta y cómo integrarlo en el presente.';
+  d.love='Observa cómo '+focus.toLowerCase()+' influye en el vínculo. La clave está en la comunicación, los límites, la reciprocidad y lo que realmente necesitas.';
+  d.money='En recursos y estabilidad, '+focus.toLowerCase()+' señala qué conviene revisar: administrar mejor, cerrar un ciclo, aprovechar una oportunidad o construir una base más sólida.';
+  d.work='En trabajo y proyectos, '+focus.toLowerCase()+' orienta sobre qué conviene iniciar, ordenar, sostener, corregir o desarrollar para avanzar.';
+  d.spirit='En el plano espiritual, '+focus.toLowerCase()+' muestra un aprendizaje que puede ayudarte a comprender mejor el momento que estás viviendo.';
   d.warning='El desafío de '+name+' aparece cuando '+focus.toLowerCase()+' se lleva al exceso o se evita mirar lo que la carta está señalando. Observa el contexto antes de actuar.';
   d.reversed='Si aparece invertida, la energía de '+name+' puede sentirse bloqueada, retrasada, exagerada o difícil de integrar. Revisa qué parte necesita equilibrio.';
  });
