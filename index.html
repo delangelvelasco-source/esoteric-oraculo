@@ -280,10 +280,26 @@ buildUnveiledData("Caballero de Oros","Dinero · recursos · trabajo · estabili
 buildUnveiledData("Reina de Oros","Dinero · recursos · trabajo · estabilidad · Madurez interna","Esta carta combina materia, recursos y estabilidad con comprensión, receptividad y dominio consciente. Lee primero el tema del palo y después observa cómo el número o figura modifica la etapa del proceso.","En amor, señala cómo la seguridad, los hechos y las necesidades prácticas influyen en el vínculo: comprensión, receptividad y dominio consciente.","En dinero, habla directamente de recursos, estabilidad y resultados materiales: comprensión, receptividad y dominio consciente.","En trabajo, se relaciona con estabilidad, recursos, organización y resultados: comprensión, receptividad y dominio consciente.","En espiritualidad, observa cómo materia, recursos y estabilidad se convierte en una experiencia de aprendizaje y conciencia: comprensión, receptividad y dominio consciente.","El reto puede aparecer cuando comprensión, receptividad y dominio consciente se lleva al exceso o se evita aprender de él. Observa el contexto de las cartas vecinas.","Invertida, comprensión, receptividad y dominio consciente puede manifestarse bloqueado, retrasado, exagerado o interiorizado. Revisa qué parte de esta energía necesita equilibrio.");
 buildUnveiledData("Rey de Oros","Dinero · recursos · trabajo · estabilidad · Dirección","Esta carta combina materia, recursos y estabilidad con madurez externa, autoridad y capacidad de gestión. Lee primero el tema del palo y después observa cómo el número o figura modifica la etapa del proceso.","En amor, señala cómo la seguridad, los hechos y las necesidades prácticas influyen en el vínculo: madurez externa, autoridad y capacidad de gestión.","En dinero, habla directamente de recursos, estabilidad y resultados materiales: madurez externa, autoridad y capacidad de gestión.","En trabajo, se relaciona con estabilidad, recursos, organización y resultados: madurez externa, autoridad y capacidad de gestión.","En espiritualidad, observa cómo materia, recursos y estabilidad se convierte en una experiencia de aprendizaje y conciencia: madurez externa, autoridad y capacidad de gestión.","El reto puede aparecer cuando madurez externa, autoridad y capacidad de gestión se lleva al exceso o se evita aprender de él. Observa el contexto de las cartas vecinas.","Invertida, madurez externa, autoridad y capacidad de gestión puede manifestarse bloqueado, retrasado, exagerado o interiorizado. Revisa qué parte de esta energía necesita equilibrio.");
 
+function refreshContextualInterpretations(){
+ Object.keys(unveiledInterpretations).forEach(name=>{
+  const d=unveiledInterpretations[name];
+  if(!d) return;
+  const focus=(d.energy||name).replace(/ · /g,', ');
+  const base=d.message||('La energía de '+name+' invita a observar el proceso que está activo en la consulta.');
+  d.love='En amor, '+base+' Observa qué necesita el vínculo: comunicación, límites, reciprocidad o una decisión consciente.';
+  d.money='En dinero y recursos, '+base+' Revisa qué acción concreta puede mejorar la estabilidad, administrar recursos o aprovechar una oportunidad.';
+  d.work='En trabajo y proyectos, '+base+' Identifica qué conviene iniciar, ordenar, sostener, corregir o desarrollar para avanzar.';
+  d.spirit='En espiritualidad, '+base+' La clave es reconocer qué aprendizaje interno está mostrando esta carta y cómo integrarlo en el presente.';
+  d.warning='El desafío de '+name+' aparece cuando '+focus.toLowerCase()+' se lleva al exceso o se evita mirar lo que la carta está señalando. Observa el contexto antes de actuar.';
+  d.reversed='Si aparece invertida, la energía de '+name+' puede sentirse bloqueada, retrasada, exagerada o difícil de integrar. Revisa qué parte necesita equilibrio.';
+ });
+}
+refreshContextualInterpretations();
+
 function buildIntegratedReading(cards){
  const q=(document.getElementById('question')?.value||'').trim();
  const names=cards.map(c=>c.name+(c.reversed?' (invertida)':''));
- const majors=cards.filter(c=>c.arcana==='major').length;
+ const majors=cards.filter(c=>c.type==='Mayores' || c.arcana==='major').length;
  const reversed=cards.filter(c=>c.reversed).length;
  const energies=cards.map(c=>(unveiledInterpretations[c.name]?.energy||'')).join(' · ');
  const first=cards[0]?.name||'';
@@ -297,8 +313,13 @@ function buildIntegratedReading(cards){
  const questionLine=q ? 'Pregunta: «'+q.replace(/[<>]/g,'')+'»' : 'La lectura se interpreta a partir de la tirada realizada.';
  const conclusion = cards.length>1
    ? 'La combinación de '+names.join(', ')+' sugiere que el mensaje no está en una carta aislada, sino en la relación entre ellas. '+direction+' '+stage+' La primera carta abre el proceso con '+first+', mientras que '+lastCard+' funciona como punto de cierre o aprendizaje de la secuencia.'
-   : 'La carta '+first+' concentra el tema principal de la consulta. '+direction+' Observa qué parte de este mensaje puedes convertir en una decisión, límite, conversación o acción concreta.';
- return {q,questionLine,energies,majors,reversed,conclusion};
+   : 'La carta '+first+' concentra el tema principal de la consulta. '+direction+' '+(unveiledInterpretations[first]?.message||'Observa qué parte de este mensaje puedes convertir en una decisión, límite, conversación o acción concreta.');
+ const firstData=unveiledInterpretations[first];
+ const lastData=unveiledInterpretations[lastCard];
+ const personalMessage = cards.length===1
+   ? (firstData?.message||'')+' En esta consulta, observa cómo esta energía se relaciona con tu situación concreta y qué acción consciente puedes tomar.'
+   : (firstData?.message||'')+' Después, observa cómo '+lastCard+' modifica o completa el proceso. La lectura cobra sentido al relacionar las cartas entre sí.';
+ return {q,questionLine,energies,majors,reversed,conclusion,personalMessage};
 }
 function showUnveiledReading(cardOrCards){
  const box=document.getElementById('unveiledReading');
@@ -310,7 +331,7 @@ function showUnveiledReading(cardOrCards){
    const d=unveiledInterpretations[card.name];
    return '<article class="unveiled-card"><div class="unveiled-card-head"><strong>'+card.name+'</strong><span>'+d.energy+(card.reversed?' · INVERTIDA':'')+'</span></div><p>'+d.message+'</p><div class="meaning-grid"><div class="meaning"><b>❤️ Amor</b><span>'+d.love+'</span></div><div class="meaning"><b>💰 Dinero</b><span>'+d.money+'</span></div><div class="meaning"><b>💼 Trabajo</b><span>'+d.work+'</span></div><div class="meaning"><b>🔮 Espiritualidad</b><span>'+d.spirit+'</span></div><div class="meaning"><b>⚠️ Advertencia</b><span>'+d.warning+'</span></div><div class="meaning"><b>↕️ Invertida</b><span>'+d.reversed+'</span></div></div></article>';
  };
- const integrated='<section class="integrated-reading"><div class="integrated-kicker">✦ ESOTERIC · MENSAJE INTEGRADO</div><h3>La historia que cuentan tus cartas</h3><p class="integrated-question">'+integratedData.questionLine+'</p><div class="integrated-summary"><div><b>Cartas</b><span>'+valid.length+'</span></div><div><b>Arcanos mayores</b><span>'+integratedData.majors+'</span></div><div><b>Invertidas</b><span>'+integratedData.reversed+'</span></div></div><p class="integrated-energy"><b>Energía de la tirada:</b> '+integratedData.energies+'</p><p class="integrated-conclusion">'+integratedData.conclusion+'</p><div class="integrated-message"><b>🔮 Mensaje para ti</b><span>«No busques una respuesta aislada en una sola carta. Mira la secuencia completa: qué aparece, qué necesita atención y qué aprendizaje queda al final. Usa la lectura como orientación para tomar conciencia y decidir con mayor claridad.»</span></div></section>';
+ const integrated='<section class="integrated-reading"><div class="integrated-kicker">✦ ESOTERIC · MENSAJE INTEGRADO</div><h3>La historia que cuentan tus cartas</h3><p class="integrated-question">'+integratedData.questionLine+'</p><div class="integrated-summary"><div><b>Cartas</b><span>'+valid.length+'</span></div><div><b>Arcanos mayores</b><span>'+integratedData.majors+'</span></div><div><b>Invertidas</b><span>'+integratedData.reversed+'</span></div></div><p class="integrated-energy"><b>Energía de la tirada:</b> '+integratedData.energies+'</p><p class="integrated-conclusion">'+integratedData.conclusion+'</p><div class="integrated-message"><b>🔮 Mensaje para ti</b><span>«'+integratedData.personalMessage+'</span></div></section>';
  const integratedOld=valid.length>1 ? '<div class="unveiled-integrated"><b>Lectura integrada</b><span>'+valid.map(c=>c.name+(c.reversed?' (invertida)':'')).join(' · ')+'</span><p>El método ESOTERIC relaciona cada carta con su posición, la pregunta y las cartas que la rodean. Observa qué energía se repite, qué cartas muestran desarrollo o desafío y cuál aporta orientación o cierre.</p></div>' : '';
  box.innerHTML=integrated+integratedOld+'<h3>✦ ESOTERIC · Significado de cada carta</h3>'+valid.map(renderOne).join('');
  box.classList.add('visible');
