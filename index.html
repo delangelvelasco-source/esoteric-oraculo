@@ -417,7 +417,7 @@ async function loadCurrentUser(){
 async function loadMembershipForUser(userId){
   try{
     const data=await apiJson('/membership?user_id='+encodeURIComponent(userId));
-    return data.found ? data.membership : null;
+    return data.membership || null;
   }catch(e){ return null; }
 }
 
@@ -433,7 +433,7 @@ function updateAuthUI(user,membership){
   authUser.style.display='block';
   document.getElementById('authUserName').textContent=user.name||user.email;
   document.getElementById('authMembership').textContent=
-    membership ? ('Membresía: '+membership.plan+' · '+membership.status) : 'Sin membresía activa';
+    membership ? ('Membresía: '+(membership.plan_id||membership.plan||'')+' · '+membership.status) : 'Sin membresía activa';
 }
 
 async function initAuth(){
@@ -530,7 +530,7 @@ async function checkOraculoAccess(spreadNumber){
 
   const token=getAuthToken();
   if(token){
-    return await apiJson('/access?spread_type='+encodeURIComponent(spreadType));
+    return await apiJson('/access?spread_id='+encodeURIComponent(spreadType));
   }
 
   const userId=getEsotericUserId();
