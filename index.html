@@ -77,7 +77,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 .empty-oracle b{display:block;font-family:Georgia,serif;font-size:18px;margin-bottom:5px}.empty-oracle span{color:var(--muted);font-size:13px}
 @media(max-width:520px){.steps{grid-template-columns:1fr 1fr 1fr}.step{padding:9px 5px}.step span{font-size:9px}.intro-panel{padding:17px 14px}}
 
-/* FINAL CELTIC MOBILE POLISH */
+.integrated-reading{margin:0 0 18px;padding:18px;border:1px solid rgba(216,180,106,.55);border-radius:18px;background:radial-gradient(circle at 50% 0,rgba(75,45,104,.34),rgba(8,5,15,.5) 65%);box-shadow:inset 0 0 30px rgba(111,70,150,.08),0 10px 30px rgba(0,0,0,.2)}.integrated-reading .integrated-kicker{text-align:center;color:var(--gold);font-size:10px;font-weight:800;letter-spacing:.18em;text-transform:uppercase}.integrated-reading h3{text-align:center;color:var(--text);font-family:Georgia,serif;font-weight:500;font-size:22px;margin:7px 0}.integrated-question{text-align:center;color:#bdb2c9;font-size:12px;margin:0 0 14px}.integrated-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:13px}.integrated-summary div{border:1px solid rgba(53,39,78,.9);border-radius:11px;padding:8px;text-align:center;background:rgba(8,5,15,.32)}.integrated-summary b{display:block;color:var(--gold);font-size:10px}.integrated-summary span{display:block;color:var(--text);font-size:15px;font-weight:800;margin-top:2px}.integrated-energy{color:#cfc5d8;font-size:11px;line-height:1.45;margin:0 0 12px}.integrated-conclusion{color:var(--text);font-size:13px;line-height:1.58;margin:0 0 13px}.integrated-message{border-left:3px solid var(--gold);padding:10px 12px;background:rgba(216,180,106,.06);border-radius:0 10px 10px 0}.integrated-message b{display:block;color:var(--gold);font-size:11px;margin-bottom:4px}.integrated-message span{display:block;color:#d2c8d9;font-size:12px;line-height:1.5}.unveiled-integrated{display:none}@media(max-width:520px){.integrated-reading{padding:15px}.integrated-reading h3{font-size:20px}.integrated-summary{gap:5px}.integrated-summary div{padding:7px 4px}.integrated-summary b{font-size:9px}.integrated-summary span{font-size:14px}}\n/* FINAL CELTIC MOBILE POLISH */
 @media(max-width:700px){
   .celtic{grid-template-columns:1fr 1.45fr 1fr .9fr;grid-template-rows:170px 215px 170px;gap:5px;overflow:visible}
   .celtic .cross{width:100%;height:215px;position:relative;overflow:visible}
@@ -280,17 +280,39 @@ buildUnveiledData("Caballero de Oros","Dinero · recursos · trabajo · estabili
 buildUnveiledData("Reina de Oros","Dinero · recursos · trabajo · estabilidad · Madurez interna","Esta carta combina materia, recursos y estabilidad con comprensión, receptividad y dominio consciente. Lee primero el tema del palo y después observa cómo el número o figura modifica la etapa del proceso.","En amor, señala cómo la seguridad, los hechos y las necesidades prácticas influyen en el vínculo: comprensión, receptividad y dominio consciente.","En dinero, habla directamente de recursos, estabilidad y resultados materiales: comprensión, receptividad y dominio consciente.","En trabajo, se relaciona con estabilidad, recursos, organización y resultados: comprensión, receptividad y dominio consciente.","En espiritualidad, observa cómo materia, recursos y estabilidad se convierte en una experiencia de aprendizaje y conciencia: comprensión, receptividad y dominio consciente.","El reto puede aparecer cuando comprensión, receptividad y dominio consciente se lleva al exceso o se evita aprender de él. Observa el contexto de las cartas vecinas.","Invertida, comprensión, receptividad y dominio consciente puede manifestarse bloqueado, retrasado, exagerado o interiorizado. Revisa qué parte de esta energía necesita equilibrio.");
 buildUnveiledData("Rey de Oros","Dinero · recursos · trabajo · estabilidad · Dirección","Esta carta combina materia, recursos y estabilidad con madurez externa, autoridad y capacidad de gestión. Lee primero el tema del palo y después observa cómo el número o figura modifica la etapa del proceso.","En amor, señala cómo la seguridad, los hechos y las necesidades prácticas influyen en el vínculo: madurez externa, autoridad y capacidad de gestión.","En dinero, habla directamente de recursos, estabilidad y resultados materiales: madurez externa, autoridad y capacidad de gestión.","En trabajo, se relaciona con estabilidad, recursos, organización y resultados: madurez externa, autoridad y capacidad de gestión.","En espiritualidad, observa cómo materia, recursos y estabilidad se convierte en una experiencia de aprendizaje y conciencia: madurez externa, autoridad y capacidad de gestión.","El reto puede aparecer cuando madurez externa, autoridad y capacidad de gestión se lleva al exceso o se evita aprender de él. Observa el contexto de las cartas vecinas.","Invertida, madurez externa, autoridad y capacidad de gestión puede manifestarse bloqueado, retrasado, exagerado o interiorizado. Revisa qué parte de esta energía necesita equilibrio.");
 
+function buildIntegratedReading(cards){
+ const q=(document.getElementById('question')?.value||'').trim();
+ const names=cards.map(c=>c.name+(c.reversed?' (invertida)':''));
+ const majors=cards.filter(c=>c.arcana==='major').length;
+ const reversed=cards.filter(c=>c.reversed).length;
+ const energies=cards.map(c=>(unveiledInterpretations[c.name]?.energy||'')).join(' · ');
+ const first=cards[0]?.name||'';
+ const lastCard=cards[cards.length-1]?.name||'';
+ const direction = reversed>cards.length/2
+   ? 'La tirada muestra una energía que pide revisar, ajustar o mirar hacia dentro antes de actuar.'
+   : 'La tirada presenta una energía que puede desarrollarse con atención consciente y decisiones concretas.';
+ const stage = cards.length===1
+   ? 'La carta funciona como eje principal de la consulta.'
+   : 'La secuencia de cartas permite observar un proceso: qué energía aparece, qué la desafía y hacia dónde puede orientarse.';
+ const questionLine=q ? 'Pregunta: «'+q.replace(/[<>]/g,'')+'»' : 'La lectura se interpreta a partir de la tirada realizada.';
+ const conclusion = cards.length>1
+   ? 'La combinación de '+names.join(', ')+' sugiere que el mensaje no está en una carta aislada, sino en la relación entre ellas. '+direction+' '+stage+' La primera carta abre el proceso con '+first+', mientras que '+lastCard+' funciona como punto de cierre o aprendizaje de la secuencia.'
+   : 'La carta '+first+' concentra el tema principal de la consulta. '+direction+' Observa qué parte de este mensaje puedes convertir en una decisión, límite, conversación o acción concreta.';
+ return {q,questionLine,energies,majors,reversed,conclusion};
+}
 function showUnveiledReading(cardOrCards){
  const box=document.getElementById('unveiledReading');
  const cardsArray=Array.isArray(cardOrCards)?cardOrCards:[cardOrCards];
  const valid=cardsArray.filter(c=>c && unveiledInterpretations[c.name]);
  if(!valid.length){box.classList.remove('visible');box.innerHTML='';return}
+ const integratedData=buildIntegratedReading(valid);
  const renderOne=(card,i)=>{
    const d=unveiledInterpretations[card.name];
    return '<article class="unveiled-card"><div class="unveiled-card-head"><strong>'+card.name+'</strong><span>'+d.energy+(card.reversed?' · INVERTIDA':'')+'</span></div><p>'+d.message+'</p><div class="meaning-grid"><div class="meaning"><b>❤️ Amor</b><span>'+d.love+'</span></div><div class="meaning"><b>💰 Dinero</b><span>'+d.money+'</span></div><div class="meaning"><b>💼 Trabajo</b><span>'+d.work+'</span></div><div class="meaning"><b>🔮 Espiritualidad</b><span>'+d.spirit+'</span></div><div class="meaning"><b>⚠️ Advertencia</b><span>'+d.warning+'</span></div><div class="meaning"><b>↕️ Invertida</b><span>'+d.reversed+'</span></div></div></article>';
  };
- const integrated=valid.length>1 ? '<div class="unveiled-integrated"><b>Lectura integrada</b><span>'+valid.map(c=>c.name+(c.reversed?' (invertida)':'')).join(' · ')+'</span><p>El método ESOTERIC relaciona cada carta con su posición, la pregunta y las cartas que la rodean. Observa qué energía se repite, qué cartas muestran desarrollo o desafío y cuál aporta orientación o cierre.</p></div>' : '';
- box.innerHTML='<h3>✦ ESOTERIC · Unveiled</h3>'+integrated+valid.map(renderOne).join('');
+ const integrated='<section class="integrated-reading"><div class="integrated-kicker">✦ ESOTERIC · MENSAJE INTEGRADO</div><h3>La historia que cuentan tus cartas</h3><p class="integrated-question">'+integratedData.questionLine+'</p><div class="integrated-summary"><div><b>Cartas</b><span>'+valid.length+'</span></div><div><b>Arcanos mayores</b><span>'+integratedData.majors+'</span></div><div><b>Invertidas</b><span>'+integratedData.reversed+'</span></div></div><p class="integrated-energy"><b>Energía de la tirada:</b> '+integratedData.energies+'</p><p class="integrated-conclusion">'+integratedData.conclusion+'</p><div class="integrated-message"><b>🔮 Mensaje para ti</b><span>«No busques una respuesta aislada en una sola carta. Mira la secuencia completa: qué aparece, qué necesita atención y qué aprendizaje queda al final. Usa la lectura como orientación para tomar conciencia y decidir con mayor claridad.»</span></div></section>';
+ const integratedOld=valid.length>1 ? '<div class="unveiled-integrated"><b>Lectura integrada</b><span>'+valid.map(c=>c.name+(c.reversed?' (invertida)':'')).join(' · ')+'</span><p>El método ESOTERIC relaciona cada carta con su posición, la pregunta y las cartas que la rodean. Observa qué energía se repite, qué cartas muestran desarrollo o desafío y cuál aporta orientación o cierre.</p></div>' : '';
+ box.innerHTML=integrated+integratedOld+'<h3>✦ ESOTERIC · Significado de cada carta</h3>'+valid.map(renderOne).join('');
  box.classList.add('visible');
 }
 
