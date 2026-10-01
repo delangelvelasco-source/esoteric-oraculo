@@ -251,7 +251,6 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
       <div class="nine-title" id="nineTitle" style="display:none"><h2>✨ Tirada de 9 cartas</h2></div>
       <div class="cards empty-oracle" id="cards"><div style="grid-column:1/-1;text-align:center"><div class="orb">✦</div><b>Tu lectura aparecerá aquí</b><span>Cuando estés listo, pulsa “Revelar mi lectura”.</span></div></div>
       <button class="share-action" id="share">💬 Compartir mi tirada por WhatsApp</button>
-      <div class="unveiled-reading" id="unveiledReading"></div>
       <div class="lead-cta" id="leadCta">
         <h4>✨ ¿Quieres ir más profundo?</h4>
         <p>Tu lectura gratuita es el primer paso. Puedes solicitar una lectura personalizada con ESOTERIC.</p>
@@ -646,7 +645,6 @@ async function draw(){
    return;
   }
 
-  document.getElementById('unveiledReading').classList.remove('visible');
   document.getElementById('leadCta')?.classList.remove('visible');
   btn.textContent='✦ Barajando…';
 
@@ -660,7 +658,6 @@ async function draw(){
   else normalDraw(last,n);
 
   document.getElementById('resultStatus').textContent=n+' cartas reveladas · '+(access.free?'lectura gratuita':'acceso autorizado');
-  showUnveiledReading(last);
   document.getElementById('share').classList.add('visible');
   const leadCta=document.getElementById('leadCta');
   if(leadCta) leadCta.classList.add('visible');
