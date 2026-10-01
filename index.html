@@ -34,6 +34,14 @@ header,main{position:relative;z-index:1}
 header{padding-top:22px}
 header .eyebrow{font-size:11px;letter-spacing:.32em;color:#8f7ca8;text-transform:uppercase;margin:0 0 10px}
 header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
+.free-badge{display:inline-flex;align-items:center;gap:7px;margin:10px auto 0;padding:7px 12px;border:1px solid rgba(216,180,106,.35);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
+.lead-cta{display:none;margin-top:16px;padding:16px;border:1px solid rgba(216,180,106,.45);border-radius:18px;background:linear-gradient(135deg,rgba(216,180,106,.10),rgba(38,24,58,.5));text-align:center}
+.lead-cta.visible{display:block}
+.lead-cta h4{margin:0 0 5px;font-family:Georgia,serif;font-size:18px;color:var(--gold);font-weight:500}
+.lead-cta p{margin:0 0 12px;color:#cfc5d8;font-size:12px;line-height:1.45}
+.lead-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:46px;width:100%;border-radius:14px;background:#25d366;color:#07150c;text-decoration:none;font-weight:900}
+.free-note{color:#a99db8;font-size:11px;line-height:1.45;margin-top:10px;text-align:center}
+.locked-option{color:#9b91a8}
 .hero-copy{max-width:620px;margin:12px auto 0}
 .hero-copy strong{color:var(--text)}
 .panel{backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
@@ -162,7 +170,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   <img class="logo-eye" src="esoteric-eye.webp" alt="ESOTERIC — símbolo del ojo">
   <div class="brand">ESOTERIC</div>
   <h1>Guía Espiritual</h1>
-  <div class="hero-copy"><p><strong>Un espacio para explorar tus preguntas.</strong><br>Elige una tirada y descubre el simbolismo de los arcanos.</p></div>
+  <div class="hero-copy"><p><strong>Tu primera lectura es gratuita.</strong><br>Haz una consulta, revela tus cartas y descubre el mensaje simbólico de ESOTERIC.</p><div class="free-badge">✦ SIN REGISTRO · 100% GRATIS</div></div>
 </header>
 
 <div class="app-shell">
@@ -177,7 +185,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
     <div>
       <div class="section-label">ESOTERIC · MI ESPACIO</div>
       <h2>Tu espacio espiritual</h2>
-      <p>Tu sesión, membresía y acceso al Oráculo están protegidos.</p>
+      <p>Haz tu primera lectura gratis. Después puedes crear una cuenta para acceder a más tiradas y beneficios.</p>
     </div>
     <div class="plan-pill" id="planPill">Membresía</div>
   </section>
@@ -210,9 +218,9 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 
   <section class="oracle-layout" id="oraculo">
     <div class="panel reading-panel">
-      <div class="section-label">01 · PREPARA TU CONSULTA</div>
+      <div class="section-label">01 · TU LECTURA GRATIS</div>
       <h2>🔮 Abre tu lectura</h2>
-      <p>Concéntrate en aquello que quieres explorar y elige la tirada que más se adapte a tu consulta.</p>
+      <p>Escribe tu pregunta y comienza sin registrarte. <strong>1 y 3 cartas son gratuitas.</strong> Las lecturas avanzadas quedan disponibles con cuenta y membresía.</p>
       <div class="field-title"><label for="userName">Tu nombre</label><small>Opcional</small></div>
       <input id="userName" type="text" maxlength="60" autocomplete="name" placeholder="Escribe tu nombre">
       <div class="spread-wrap">
@@ -220,18 +228,18 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
         <textarea id="question" maxlength="500" placeholder="Escribe tu pregunta o el tema que quieres consultar…"></textarea>
         <label for="spread">Elige tu tirada</label>
         <select id="spread" aria-label="Tipo de tirada">
-          <option value="1">Carta del Día · 1 carta</option>
-          <option value="3">Pregunta Concreta · 3 cartas</option>
-          <option value="5">Cruz Simple · 5 cartas</option>
-          <option value="2">Cuerpo y Mente · 2 cartas</option>
-          <option value="9">Tirada de 9 cartas · 9 cartas</option>
-          <option value="10">Cruz Celta · 10 cartas</option>
-          <option value="12">Futuro Próximo · 12 cartas</option>
+          <option value="3">✨ Lectura gratuita · 3 cartas</option>
+          <option value="1">🌙 Carta del Día · 1 carta · GRATIS</option>
+          <option value="5" class="locked-option">🔒 Cruz Simple · 5 cartas</option>
+          <option value="2" class="locked-option">🔒 Cuerpo y Mente · 2 cartas</option>
+          <option value="9" class="locked-option">🔒 Tirada de 9 cartas · 9 cartas</option>
+          <option value="10" class="locked-option">🔒 Cruz Celta · 10 cartas</option>
+          <option value="12" class="locked-option">🔒 Futuro Próximo · 12 cartas</option>
         </select>
         <div class="spread-description" id="spreadDescription">Una carta para una reflexión breve del momento.</div>
         <div class="actions"><button id="draw">🔮 Revelar mi lectura</button></div>
         <div class="steps"><div class="step"><b>01</b><span>Elige tu tirada</span></div><div class="step"><b>02</b><span>Baraja y revela</span></div><div class="step"><b>03</b><span>Descubre tu mensaje</span></div></div>
-        <div class="hint">La lectura es simbólica y de carácter espiritual.</div>
+        <div class="free-note">No necesitas crear una cuenta para comenzar. La lectura es simbólica y de carácter espiritual.</div>
       </div>
     </div>
 
@@ -244,13 +252,18 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
       <div class="cards empty-oracle" id="cards"><div style="grid-column:1/-1;text-align:center"><div class="orb">✦</div><b>Tu lectura aparecerá aquí</b><span>Cuando estés listo, pulsa “Revelar mi lectura”.</span></div></div>
       <button class="share-action" id="share">💬 Compartir mi tirada por WhatsApp</button>
       <div class="unveiled-reading" id="unveiledReading"></div>
+      <div class="lead-cta" id="leadCta">
+        <h4>✨ ¿Quieres ir más profundo?</h4>
+        <p>Tu lectura gratuita es el primer paso. Puedes solicitar una lectura personalizada con ESOTERIC.</p>
+        <a id="leadWhatsapp" href="https://wa.me/?text=Hola%20ESOTERIC%2C%20acabo%20de%20hacer%20una%20lectura%20gratuita%20en%20el%20Or%C3%A1culo%20y%20quiero%20una%20lectura%20personalizada." target="_blank" rel="noopener">💬 Solicitar mi lectura personalizada</a>
+      </div>
     </section>
   </section>
 
   <section class="panel" id="membresia">
     <div class="section-label">03 · TU MEMBRESÍA</div>
     <h2>⭐ Acceso ESOTERIC</h2>
-    <p id="membershipSummary">Tu plan determina las tiradas disponibles en el Oráculo.</p>
+    <p id="membershipSummary">Empieza gratis con 1 o 3 cartas. Crea tu cuenta cuando quieras y desbloquea las tiradas avanzadas según tu membresía.</p>
   </section>
 
   <section class="panel" style="display:none"><h2>Los 78 Arcanos</h2><div class="filters"></div><div class="gallery" id="gallery"></div></section>
@@ -615,7 +628,15 @@ async function draw(){
  btn.textContent='✦ Verificando acceso…';
 
  try{
-  const access=await checkOraculoAccess(n);
+  let access={authorized:false};
+
+  // Las lecturas de 1 y 3 cartas funcionan como puerta de entrada gratuita.
+  // Las tiradas avanzadas continúan protegidas por la membresía.
+  if(n===1 || n===3){
+    access={authorized:true,free:true};
+  }else{
+    access=await checkOraculoAccess(n);
+  }
 
   if(!access.authorized){
    showAccessMessage('🔒 Esta tirada no está disponible para tu membresía.');
@@ -626,6 +647,7 @@ async function draw(){
   }
 
   document.getElementById('unveiledReading').classList.remove('visible');
+  document.getElementById('leadCta')?.classList.remove('visible');
   btn.textContent='✦ Barajando…';
 
   last=shuffled().slice(0,n).map(makeCard);
@@ -637,9 +659,16 @@ async function draw(){
   else if(n===5)simpleCrossDraw(last);
   else normalDraw(last,n);
 
-  document.getElementById('resultStatus').textContent=n+' cartas reveladas · acceso autorizado';
+  document.getElementById('resultStatus').textContent=n+' cartas reveladas · '+(access.free?'lectura gratuita':'acceso autorizado');
   showUnveiledReading(last);
   document.getElementById('share').classList.add('visible');
+  const leadCta=document.getElementById('leadCta');
+  if(leadCta) leadCta.classList.add('visible');
+  const q=document.getElementById('question')?.value?.trim()||'';
+  const nm=document.getElementById('userName')?.value?.trim()||'';
+  const waText='Hola ESOTERIC, acabo de hacer una lectura gratuita en el Oráculo.'+(nm?' Soy '+nm+'.':'')+(q?' Mi pregunta fue: '+q:'')+' Quiero una lectura personalizada.';
+  const wa=document.getElementById('leadWhatsapp');
+  if(wa) wa.href='https://wa.me/?text='+encodeURIComponent(waText);
 
   btn.classList.remove('loading');
   btn.textContent='🔮 Revelar otra vez';
