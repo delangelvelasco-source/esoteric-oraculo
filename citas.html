@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>ESOTERIC · Citas</title>
+<meta name="theme-color" content="#0e0918">
+<style>
+:root{--bg:#0b0713;--panel:#171027;--panel2:#0e0918;--gold:#d8b46a;--text:#f7f2e8;--muted:#aaa0b5;--line:rgba(216,180,106,.22)}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(circle at 50% 0%,#241637 0,#0b0713 48%,#07050d 100%);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+.wrap{width:min(760px,100%);margin:0 auto;padding:18px 14px 40px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}
+.brand{color:var(--gold);font-weight:900;letter-spacing:.16em;font-size:13px}
+.back{color:var(--gold);text-decoration:none;border:1px solid var(--line);background:rgba(216,180,106,.07);border-radius:999px;padding:9px 13px;font-size:12px;font-weight:800}
+.panel{border:1px solid var(--line);border-radius:22px;background:linear-gradient(180deg,rgba(29,22,48,.98),rgba(12,8,21,.98));padding:20px;box-shadow:0 18px 50px rgba(0,0,0,.2)}
+.label{display:flex;align-items:center;gap:8px;color:var(--gold);font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;margin-bottom:14px}
+.label:after{content:"";height:1px;background:var(--line);flex:1}
+.head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:14px}
+h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
+.sub{margin:7px 0 0;color:var(--muted);font-size:14px}
+.date{width:auto;min-width:190px;margin:0;background:#0a0710;color:var(--text);border:1px solid #47365f;border-radius:14px;padding:13px;font-size:15px}
+.hours{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px}
+.hours span{border:1px solid rgba(216,180,106,.3);background:rgba(216,180,106,.07);color:var(--gold);border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700}
+.day{color:var(--text);font-weight:800;margin:10px 0 12px}
+.slots{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
+.slot{border:1px solid #47365f;background:#0e0918;color:var(--text);padding:12px 8px;border-radius:12px;font-weight:800;font-size:13px;cursor:pointer}
+.slot:hover{border-color:var(--gold);background:rgba(216,180,106,.1)}
+.slot:disabled{opacity:.7;cursor:default}
+.note{margin-top:15px;color:var(--muted);font-size:12px;text-align:center;line-height:1.5}
+@media(max-width:520px){.wrap{padding:12px 10px 30px}.panel{padding:16px}.head{display:block}.date{width:100%;margin-top:14px}.slots{grid-template-columns:repeat(3,1fr)}.slot{padding:10px 4px;font-size:12px}h1{font-size:25px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <div class="top"><div class="brand">ESOTERIC</div><a class="back" href="index.html">← Volver al Oráculo</a></div>
+  <section class="panel">
+    <div class="label">CITAS</div>
+    <div class="head">
+      <div><h1>📅 Reserva tu lectura</h1><p class="sub">Elige el día y un horario de 15 minutos.</p></div>
+      <input class="date" id="agendaDate" type="date" aria-label="Selecciona una fecha">
+    </div>
+    <div class="hours">
+      <span>Lun–Vie · 20:00–22:00</span>
+      <span>Sábado · 10:00–14:00</span>
+      <span>Sábado · 18:00–02:00</span>
+    </div>
+    <div class="day" id="agendaDay">Selecciona una fecha</div>
+    <div class="slots" id="agendaSlots"></div>
+    <div class="note">Al elegir un horario te pediremos tu nombre y WhatsApp para generar la solicitud y abrir WhatsApp para confirmar.</div>
+  </section>
+</main>
+<script>
+(function(){
+  const dateEl=document.getElementById('agendaDate');
+  const dayEl=document.getElementById('agendaDay');
+  const slotsEl=document.getElementById('agendaSlots');
+  const wa='528123859824';
+  const API='https://esoteric-citas.delangel-velasco.workers.dev';
+  const pad=n=>String(n).padStart(2,'0');
+  const fmtDate=d=>new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long'}).format(d);
+  const makeSlots=(startHour,endHour)=>{const out=[];let m=startHour*60;const end=endHour*60;while(m<end){out.push(pad(Math.floor(m/60))+':'+pad(m%60));m+=15}return out};
+  function render(){
+    slotsEl.innerHTML='';
+    if(!dateEl.value){dayEl.textContent='Selecciona una fecha';return}
+    const d=new Date(dateEl.value+'T12:00:00');
+    const dow=d.getDay();
+    let slots=[];
+    if(dow>=1&&dow<=5)slots=makeSlots(20,22);
+    if(dow===6)slots=makeSlots(10,14).concat(makeSlots(18,24));
+    if(dow===0)slots=makeSlots(0,2);
+    dayEl.textContent=fmtDate(d).replace(/^./,x=>x.toUpperCase());
+    if(!slots.length){slotsEl.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:18px">No hay citas disponibles este día.</div>';return}
+    slots.forEach(time=>{
+      const b=document.createElement('button');b.type='button';b.className='slot';b.textContent=time;
+      b.addEventListener('click',async()=>{
+        let name=prompt('¿Cuál es tu nombre?')?.trim()||'';
+        if(!name){alert('Escribe tu nombre para reservar la cita.');return}
+        let phone=prompt('¿Cuál es tu WhatsApp?')?.trim()||'';
+        if(!phone){alert('Necesitamos tu WhatsApp para confirmar la cita.');return}
+        b.disabled=true;b.textContent='…';
+        try{
+          const token=localStorage.getItem('esoteric_auth_token')||'';
+          const headers={'Content-Type':'application/json','Accept':'application/json'};
+          if(token)headers.Authorization='Bearer '+token;
+          const r=await fetch(API+'/appointments',{method:'POST',headers,body:JSON.stringify({date:dateEl.value,time,client_name:name,client_phone:phone,service:'Lectura de Tarot',duration_minutes:15})});
+          const data=await r.json().catch(()=>({}));
+          if(!r.ok)throw new Error(data.error||'No se pudo reservar el horario.');
+          const a=data.appointment;
+          const msg='🔮 ESOTERIC — Solicitud de cita\nFolio: '+a.folio+'\nFecha: '+fmtDate(d)+'\nHora: '+time+'\nDuración: 15 minutos\nNombre: '+name+'\n\nQuiero confirmar mi cita.';
+          window.open('https://wa.me/'+wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
+          b.textContent=time;b.disabled=true;
+        }catch(e){alert('⚠️ '+e.message);b.disabled=false;b.textContent=time}
+      });
+      slotsEl.appendChild(b);
+    });
+  }
+  const now=new Date();
+  dateEl.min=now.toISOString().slice(0,10);
+  dateEl.value=now.toISOString().slice(0,10);
+  dateEl.addEventListener('change',render);
+  render();
+})();
+</script>
+</body>
+</html>
