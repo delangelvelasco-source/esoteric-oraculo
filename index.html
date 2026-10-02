@@ -837,5 +837,34 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
 })();
 </script>
 </body>
-</html></body>
+</html><script>
+(function(){
+  function initLivingEye(){
+    const eye=document.querySelector('header .logo-eye');
+    if(!eye || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+    const movements=[
+      [-14,0,-2.2,1.025],[12,-3,2.0,1.02],[-9,4,1.5,1.018],[10,2,-1.8,1.022],[0,0,0,1]
+    ];
+    let index=0;
+    function awaken(){
+      const m=movements[index%movements.length];
+      eye.classList.add('eye-awake');
+      eye.style.transform='translate3d('+m[0]+'px,'+m[1]+'px,0) rotate('+m[2]+'deg) scale('+m[3]+')';
+      setTimeout(function(){
+        eye.style.transform='translate3d('+(-m[0]*.35)+'px,'+(-m[1]*.35)+'px,0) rotate('+(-m[2]*.35)+'deg) scale(1.01)';
+        setTimeout(function(){
+          eye.style.transform='translate3d(0,0,0) rotate(0deg) scale(1)';
+          eye.classList.remove('eye-awake');
+        },900);
+      },1400);
+      index++;
+    }
+    setTimeout(awaken,3000);
+    setInterval(awaken,30000);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initLivingEye);
+  else initLivingEye();
+})();
+</script>
+</body>
 </html>
