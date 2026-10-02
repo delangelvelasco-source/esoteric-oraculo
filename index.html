@@ -194,19 +194,16 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
     <div id="authForms">
       <div class="auth-tabs">
         <button type="button" class="auth-tab active" id="loginTab">Iniciar sesión</button>
-        <button type="button" class="auth-tab" id="registerTab">Crear cuenta</button>
       </div>
       <form class="auth-form" id="loginForm">
         <input id="loginEmail" type="email" placeholder="Correo electrónico" autocomplete="email" required>
         <input id="loginPassword" type="password" placeholder="Contraseña" autocomplete="current-password" required>
         <button type="submit" id="loginBtn">🔐 Entrar a ESOTERIC</button>
       </form>
-      <form class="auth-form" id="registerForm" style="display:none">
-        <input id="registerName" type="text" placeholder="Nombre" autocomplete="name">
-        <input id="registerEmail" type="email" placeholder="Correo electrónico" autocomplete="email" required>
-        <input id="registerPassword" type="password" placeholder="Contraseña (mínimo 8 caracteres)" autocomplete="new-password" required>
-        <button type="submit">✨ Crear mi cuenta</button>
-      </form>
+      <div class="register-external">
+        <span>¿Aún no tienes cuenta?</span>
+        <a href="registro.html" class="register-external-btn">✨ Crear cuenta</a>
+      </div>
       <div class="auth-msg" id="authMsg"></div>
     </div>
     <div class="auth-user" id="authUser">
@@ -500,41 +497,8 @@ async function initAuth(){
 
 document.getElementById('loginTab').onclick=()=>{
   document.getElementById('loginTab').classList.add('active');
-  document.getElementById('registerTab').classList.remove('active');
-  document.getElementById('loginForm').style.display='grid';
-  document.getElementById('registerForm').style.display='none';
   document.getElementById('authMsg').textContent='';
 };
-
-document.getElementById('registerTab').onclick=()=>{
-  document.getElementById('registerTab').classList.add('active');
-  document.getElementById('loginTab').classList.remove('active');
-  document.getElementById('loginForm').style.display='none';
-  document.getElementById('registerForm').style.display='grid';
-  document.getElementById('authMsg').textContent='';
-};
-
-document.getElementById('registerForm').addEventListener('submit',async e=>{
-  e.preventDefault();
-  const msg=document.getElementById('authMsg');
-  msg.textContent='Creando cuenta…';
-  try{
-    const data=await apiJson('/register',{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        name:document.getElementById('registerName').value.trim(),
-        email:document.getElementById('registerEmail').value.trim(),
-        password:document.getElementById('registerPassword').value
-      })
-    });
-    msg.textContent='Cuenta creada. Ahora inicia sesión.';
-    document.getElementById('loginTab').click();
-    document.getElementById('loginEmail').value=data.user.email;
-  }catch(e){
-    msg.textContent='⚠️ '+e.message;
-  }
-});
 
 document.getElementById('loginForm').addEventListener('submit',async e=>{
   e.preventDefault();
