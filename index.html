@@ -336,20 +336,6 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 
 .access-cta{display:flex;justify-content:center;margin:10px 0 16px}.access-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 18px;border:1px solid rgba(216,180,106,.55);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.02em;transition:.2s}.access-cta a:hover{background:rgba(216,180,106,.16);border-color:var(--gold)}.account-state{display:none;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 16px;color:var(--muted);font-size:12px}.account-state strong{color:var(--gold)}.account-logout{border:1px solid rgba(216,180,106,.45);border-radius:999px;padding:8px 14px;background:rgba(216,180,106,.08);color:var(--gold);font-weight:800;font-size:11px;cursor:pointer}.logged-in .app-nav{border-color:rgba(216,180,106,.38);box-shadow:0 8px 30px rgba(216,180,106,.06)}.logged-in .hero-copy{margin:0 auto;padding:12px 18px 14px;max-width:720px;border:1px solid rgba(216,180,106,.16);border-radius:18px;background:linear-gradient(180deg,rgba(39,27,61,.38),rgba(14,9,24,.18));box-shadow:inset 0 0 25px rgba(216,180,106,.025)}.logged-in .free-badge{border-color:rgba(216,180,106,.65);background:rgba(216,180,106,.08)}.logged-in .account-state{padding:10px 14px;border:1px solid rgba(216,180,106,.24);border-radius:16px;background:linear-gradient(180deg,rgba(35,25,54,.9),rgba(15,10,26,.9));box-shadow:0 10px 24px rgba(0,0,0,.2);width:max-content;max-width:100%;margin:8px auto 16px}
 
-/* Agenda ESOTERIC */
-.agenda-panel{background:linear-gradient(180deg,rgba(29,22,48,.98),rgba(12,8,21,.98));}
-.agenda-head{display:flex;justify-content:space-between;align-items:end;gap:14px;flex-wrap:wrap;margin-bottom:14px}
-.agenda-head h2{margin:0;font-family:Georgia,serif;font-weight:500}
-.agenda-head p{margin:6px 0 0;color:var(--muted);font-size:14px}
-.agenda-date{width:auto;min-width:190px;margin:0}
-.agenda-hours{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px}
-.agenda-hours span{border:1px solid rgba(216,180,106,.3);background:rgba(216,180,106,.07);color:#d8b46a;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:700}
-.agenda-day{color:#f7f2e8;font-weight:800;margin:10px 0 12px}
-.agenda-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px}
-.agenda-slot{border:1px solid #47365f;background:#0e0918;color:var(--text);padding:10px 8px;border-radius:12px;font-weight:800;font-size:13px}
-.agenda-slot:hover{border-color:var(--gold);background:rgba(216,180,106,.1)}
-.agenda-note{margin-top:14px;color:var(--muted);font-size:12px;text-align:center}
-@media(max-width:520px){.agenda-date{width:100%}.agenda-slots{grid-template-columns:repeat(3,1fr)}.agenda-slot{padding:9px 4px;font-size:12px}}
 </style>
 </head>
 <body>
@@ -370,7 +356,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   <nav class="app-nav" aria-label="Navegación del Oráculo">
     <a class="active" href="#oraculo">🔮 Oráculo</a>
     <a href="#lecturas">📖 Lecturas</a>
-    <a href="#agenda">📅 Citas</a>
+    <a href="citas.html">📅 Citas</a>
     <a href="membresias.html">⭐ Membresía</a>
   </nav>
 
@@ -447,21 +433,6 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   </section>
 
 
-  <section class="panel agenda-panel" id="agenda">
-    <div class="section-label">03 · AGENDA DE CITAS</div>
-    <div class="agenda-head">
-      <div><h2>📅 Reserva tu lectura</h2><p>Elige el día y un horario de 15 minutos.</p></div>
-      <input class="agenda-date" id="agendaDate" type="date" aria-label="Selecciona una fecha">
-    </div>
-    <div class="agenda-hours">
-      <span>Lun–Vie · 20:00–22:00</span>
-      <span>Sábado · 10:00–14:00</span>
-      <span>Sábado · 18:00–02:00</span>
-    </div>
-    <div class="agenda-day" id="agendaDay">Selecciona una fecha</div>
-    <div class="agenda-slots" id="agendaSlots"></div>
-    <div class="agenda-note">Al elegir un horario se abrirá WhatsApp para confirmar tu cita.</div>
-  </section>
 
   <section class="panel" id="membresia">
     <div class="section-label">03 · TU MEMBRESÍA</div>
@@ -1008,65 +979,6 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
 })();
 </script>
 
-<script>
-(function(){
-  const dateEl=document.getElementById('agendaDate');
-  const dayEl=document.getElementById('agendaDay');
-  const slotsEl=document.getElementById('agendaSlots');
-  if(!dateEl||!dayEl||!slotsEl)return;
-  const wa='528123859824';
-  const API='https://esoteric-citas.delangel-velasco.workers.dev';
-  const pad=n=>String(n).padStart(2,'0');
-  const fmtDate=d=>new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long'}).format(d);
-  const makeSlots=(startHour,endHour)=>{const out=[];let m=startHour*60;const end=endHour*60;while(m<end){out.push(pad(Math.floor(m/60))+':'+pad(m%60));m+=15}return out};
-  function render(){
-    slotsEl.innerHTML='';
-    if(!dateEl.value){dayEl.textContent='Selecciona una fecha';return}
-    const d=new Date(dateEl.value+'T12:00:00');
-    const dow=d.getDay();
-    let slots=[];
-    if(dow>=1&&dow<=5)slots=makeSlots(20,22);
-    if(dow===6)slots=makeSlots(10,14).concat(makeSlots(18,24));
-    if(dow===0)slots=makeSlots(0,2);
-    dayEl.textContent=fmtDate(d).replace(/^./,x=>x.toUpperCase());
-    if(!slots.length){slotsEl.innerHTML='<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:18px">No hay citas disponibles este día.</div>';return}
-    slots.forEach(time=>{
-      const b=document.createElement('button');b.type='button';b.className='agenda-slot';b.textContent=time;
-      b.addEventListener('click',async()=>{
-        let name=(document.getElementById('userName')?.value||'').trim();
-        if(!name)name=prompt('¿Cuál es tu nombre?')?.trim()||'';
-        if(!name){alert('Escribe tu nombre para reservar la cita.');return}
-        let phone=(document.getElementById('userPhone')?.value||'').trim();
-        if(!phone)phone=prompt('¿Cuál es tu WhatsApp?')?.trim()||'';
-        if(!phone){alert('Necesitamos tu WhatsApp para confirmar la cita.');return}
-        b.disabled=true;b.textContent='…';
-        try{
-          const token=localStorage.getItem('esoteric_auth_token')||'';
-          const headers={'Content-Type':'application/json','Accept':'application/json'};
-          if(token)headers.Authorization='Bearer '+token;
-          const service=document.getElementById('spread')?.selectedOptions?.[0]?.textContent?.replace(/^[^ ]+ /,'')||'Lectura de Tarot';
-          const r=await fetch(API+'/appointments',{method:'POST',headers,body:JSON.stringify({date:dateEl.value,time,client_name:name,client_phone:phone,service,duration_minutes:15})});
-          const data=await r.json().catch(()=>({}));
-          if(!r.ok)throw new Error(data.error||'No se pudo reservar el horario.');
-          const a=data.appointment;
-          const msg='🔮 ESOTERIC — Solicitud de cita\nFolio: '+a.folio+'\nFecha: '+fmtDate(d)+'\nHora: '+time+'\nDuración: 15 minutos\nNombre: '+name+'\n\nQuiero confirmar mi cita.';
-          window.open('https://wa.me/'+wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
-          b.textContent=time;b.disabled=true;b.classList.add('reserved');
-        }catch(e){
-          alert('⚠️ '+e.message);
-          b.disabled=false;b.textContent=time;
-        }
-      });
-      slotsEl.appendChild(b);
-    });
-  }
-  const now=new Date();
-  dateEl.min=now.toISOString().slice(0,10);
-  dateEl.value=now.toISOString().slice(0,10);
-  dateEl.addEventListener('change',render);
-  render();
-})();
-</script>
 </body>
 </body>
 </html>
