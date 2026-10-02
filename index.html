@@ -831,50 +831,112 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
   canvas.id='esotericSky';
   document.body.prepend(canvas);
   const ctx=canvas.getContext('2d',{alpha:true});
-  if(!ctx)return;
-  let w=0,h=0,dpr=1,stars=[],nodes=[],t=0;
-  const mobile=()=>window.innerWidth<600;
+  if(!ctx || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+  let w=0,h=0,dpr=1,stars=[],constellation=[],target=[],nextChange=60000,last=performance.now();
+
   function resize(){
-    dpr=Math.min(window.devicePixelRatio||1,2);
+    dpr=Math.min(devicePixelRatio||1,2);
     w=innerWidth;h=innerHeight;
     canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);
     canvas.style.width=w+'px';canvas.style.height=h+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    const count=Math.round((w*h)/(mobile()?8500:5200));
-    stars=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:.35+Math.random()*1.15,a:.2+Math.random()*.65,s:.0005+Math.random()*.0018,p:Math.random()*Math.PI*2}));
-    const n=Math.min(mobile()?7:12,Math.max(6,Math.round(w/110)));
-    nodes=Array.from({length:n},(_,i)=>({x:w*(.08+Math.random()*.84),y:h*(.10+Math.random()*.72),vx:(Math.random()-.5)*.012,vy:(Math.random()-.5)*.008,p:i*1.7}));
+    const count=Math.round((w*h)/(w<600?8500:5200));
+    stars=Array.from({length:count},()=>({
+      x:Math.random()*w,y:Math.random()*h,
+      tx:0,ty:0,r:.35+Math.random()*1.15,
+      a:.18+Math.random()*.65,
+      drift:(Math.random()-.5)*.018,
+      phase:Math.random()*Math.PI*2
+    }));
+    createConstellation(true);
   }
-  function draw(){
-    t+=.008;
+
+  function createConstellation(initial){
+    const count=w<600?7:10;
+    target=Array.from({length:count},()=>({
+      x:w*(.12+Math.random()*.76),
+      y:h*(.12+Math.random()*.68)
+    }));
+    // Associate each constellation point with a nearby star so the stars themselves travel.
+    target.forEach((p,i)=>{
+      let best=null,bestD=Infinity;
+      for(const s of stars){
+        if(s.used)continue;
+        const d=Math.hypot(s.x-p.x,s.y-p.y);
+        if(d<bestD){best=s;bestD=d;}
+      }
+      if(best){best.used=true;target[i].star=best;}
+    });
+    stars.forEach(s=>delete s.used);
+    constellation=target.map(p=>({x:p.x,y:p.y,px:p.x,py:p.y,star:p.star}));
+    if(!initial){
+      constellation.forEach(n=>{n.fromX=n.x;n.fromY=n.y;});
+    }
+  }
+
+  function updateConstellation(){
+    const now=performance.now();
+    if(now-last>nextChange){
+      constellation.forEach(n=>{n.fromX=n.x;n.fromY=n.y;});
+      createConstellation(false);
+      last=now;
+    }
+    const progress=Math.min(1,(now-last)/6500);
+    const eased=progress<.5?2*progress*progress:1-Math.pow(-2*progress+2,2)/2;
+    constellation.forEach((n,i)=>{
+      const p=target[i];
+      n.x=n.fromX+(p.x-n.fromX)*eased;
+      n.y=n.fromY+(p.y-n.fromY)*eased;
+      if(n.star){
+        n.star.x=n.x;
+        n.star.y=n.y;
+        n.star.a=.7+.25*Math.sin(now*.003+i);
+      }
+    });
+  }
+
+  function draw(now){
     ctx.clearRect(0,0,w,h);
+    updateConstellation();
+
     for(const s of stars){
-      const tw=s.a*(.72+.28*Math.sin(t*s.s*900+s.p));
+      if(!s.tx){
+        s.tx=s.x;s.ty=s.y;
+      }
+      // Very slow ambient drift keeps the whole sky alive.
+      s.x+=s.drift;
+      if(s.x<-5)s.x=w+5;if(s.x>w+5)s.x=-5;
+      const tw=s.a*(.72+.28*Math.sin(now*.0012+s.phase));
       ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
       ctx.fillStyle='rgba(244,231,255,'+tw+')';ctx.fill();
     }
-    for(const n of nodes){
-      n.x+=n.vx;n.y+=n.vy;
-      if(n.x<-40)n.x=w+40;if(n.x>w+40)n.x=-40;
-      if(n.y<-40)n.y=h+40;if(n.y>h+40)n.y=-40;
+
+    // Different constellation each minute.
+    ctx.lineWidth=.75;
+    for(let i=0;i<constellation.length;i++){
+      const a=constellation[i],b=constellation[(i+1)%constellation.length];
+      if(i===constellation.length-1 && Math.random()>.25)continue;
+      ctx.strokeStyle='rgba(196,157,232,.22)';
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
     }
-    ctx.lineWidth=0.7;
-    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
-      const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.hypot(dx,dy);
-      const max=mobile()?185:235;
-      if(dist<max){
-        ctx.strokeStyle='rgba(174,133,220,'+((1-dist/max)*.20)+')';
-        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
-      }
+    // A few cross-links make each formation unique.
+    for(let i=0;i<constellation.length-2;i+=2){
+      const a=constellation[i],b=constellation[i+2];
+      ctx.strokeStyle='rgba(216,180,106,.12)';
+      ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
     }
-    for(const n of nodes){
-      const glow=.45+.25*Math.sin(t+n.p);
-      ctx.beginPath();ctx.arc(n.x,n.y,1.25,0,Math.PI*2);
-      ctx.fillStyle='rgba(216,180,106,'+glow+')';ctx.fill();
+    for(let i=0;i<constellation.length;i++){
+      const n=constellation[i];
+      ctx.beginPath();ctx.arc(n.x,n.y,1.35,0,Math.PI*2);
+      ctx.fillStyle='rgba(216,180,106,.72)';ctx.fill();
     }
     requestAnimationFrame(draw);
   }
-  resize();addEventListener('resize',resize,{passive:true});draw();
+
+  resize();
+  addEventListener('resize',resize,{passive:true});
+  requestAnimationFrame(draw);
 })();
 </script>
 <script>
