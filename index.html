@@ -30,6 +30,11 @@ label{display:block;color:var(--gold);font-weight:700;margin:0 0 8px}input,texta
 
 
 
+/* ESOTERIC · cielo dinámico */
+#esotericSky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.82}
+body>header,body>.app-shell{position:relative;z-index:1}
+@media(prefers-reduced-motion:reduce){#esotericSky{display:none}}
+
 /* ESOTERIC · fondo premium */
 body{
   background:
@@ -772,6 +777,58 @@ async function buildSpreadImage(){const w=1080,count=last.length,cols=count===1?
 document.getElementById('share').addEventListener('click',async()=>{if(!last.length)return;try{const blob=await buildSpreadImage();const file=new File([blob],'esoteric-mi-lectura.png',{type:'image/png'});if(navigator.share){if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({files:[file],text:'Hola ESOTERIC, acabo de hacer una lectura gratuita en el Oráculo. Quiero una lectura personalizada.',title:'ESOTERIC · Mi lectura'});return}}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='esoteric-mi-lectura.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);alert('La imagen de tu tirada está lista. En WhatsApp, adjunta esta imagen.');}catch(e){if(e.name!=='AbortError'){console.error('Share error',e);try{const blob=await buildSpreadImage();const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='esoteric-mi-lectura.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);alert('La imagen se generó correctamente. Si WhatsApp no la adjunta automáticamente, abre la imagen descargada y compártela desde Fotos.');}catch(e2){console.error('Image build error',e2);alert('No se pudo generar la imagen de la lectura.')}}}});const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
 <script>(function(){const el=document.querySelector('.visit-counter .counterapi');if(!el)return;const reveal=()=>{if(el.textContent.trim())el.classList.add('ready')};reveal();new MutationObserver(reveal).observe(el,{childList:true,subtree:true,characterData:true});})();</script><script src="https://counterapi.com/c.js?ns=esoteric-oraculo" async></script>
+<script>
+(function(){
+  const canvas=document.createElement('canvas');
+  canvas.id='esotericSky';
+  document.body.prepend(canvas);
+  const ctx=canvas.getContext('2d',{alpha:true});
+  if(!ctx)return;
+  let w=0,h=0,dpr=1,stars=[],nodes=[],t=0;
+  const mobile=()=>window.innerWidth<600;
+  function resize(){
+    dpr=Math.min(window.devicePixelRatio||1,2);
+    w=innerWidth;h=innerHeight;
+    canvas.width=Math.floor(w*dpr);canvas.height=Math.floor(h*dpr);
+    canvas.style.width=w+'px';canvas.style.height=h+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const count=Math.round((w*h)/mobile()?125:420);
+    stars=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,r:.35+Math.random()*1.15,a:.2+Math.random()*.65,s:.0005+Math.random()*.0018,p:Math.random()*Math.PI*2}));
+    const n=Math.min(mobile()?7:12,Math.max(6,Math.round(w/110)));
+    nodes=Array.from({length:n},(_,i)=>({x:w*(.08+Math.random()*.84),y:h*(.10+Math.random()*.72),vx:(Math.random()-.5)*.012,vy:(Math.random()-.5)*.008,p:i*1.7}));
+  }
+  function draw(){
+    t+=.008;
+    ctx.clearRect(0,0,w,h);
+    for(const s of stars){
+      const tw=s.a*(.72+.28*Math.sin(t*s.s*900+s.p));
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle='rgba(244,231,255,'+tw+')';ctx.fill();
+    }
+    for(const n of nodes){
+      n.x+=n.vx;n.y+=n.vy;
+      if(n.x<-40)n.x=w+40;if(n.x>w+40)n.x=-40;
+      if(n.y<-40)n.y=h+40;if(n.y>h+40)n.y=-40;
+    }
+    ctx.lineWidth=0.7;
+    for(let i=0;i<nodes.length;i++)for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j],dx=a.x-b.x,dy=a.y-b.y,dist=Math.hypot(dx,dy);
+      const max=mobile()?185:235;
+      if(dist<max){
+        ctx.strokeStyle='rgba(174,133,220,'+((1-dist/max)*.20)+')';
+        ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+      }
+    }
+    for(const n of nodes){
+      const glow=.45+.25*Math.sin(t+n.p);
+      ctx.beginPath();ctx.arc(n.x,n.y,1.25,0,Math.PI*2);
+      ctx.fillStyle='rgba(216,180,106,'+glow+')';ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  resize();addEventListener('resize',resize,{passive:true});draw();
+})();
+</script>
 </body>
 </html></body>
 </html>
