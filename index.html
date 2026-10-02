@@ -44,25 +44,28 @@ label{display:block;color:var(--gold);font-weight:700;margin:0 0 8px}input,texta
   width:100%;height:100%;margin:0;
   position:relative;z-index:1;
 }
-/* ESOTERIC · ojo vivo: sin movimiento de iris, parpadeo natural */
+/* ESOTERIC · ojo vivo: parpadea SOLO el ojo central */
 .eye-iris-glow{display:none!important}
 .eye-live-wrap{overflow:hidden;border-radius:50%}
-.eye-live-wrap .logo-eye{
-  clip-path:ellipse(50% 50% at 50% 50%);
-  transition:clip-path .22s cubic-bezier(.65,0,.35,1),filter .22s ease,transform .22s ease;
-  will-change:clip-path,filter,transform;
+.eye-live-wrap .logo-eye{position:relative;z-index:1;transition:filter .18s ease}
+.eye-blink-shutter{
+  position:absolute;z-index:4;left:8%;right:8%;top:24%;height:52%;
+  border-radius:50%;pointer-events:none;transform:scaleY(0);transform-origin:center;
+  opacity:0;
+  background:radial-gradient(ellipse at 50% 50%,rgba(7,4,13,.98) 0 58%,rgba(7,4,13,.90) 70%,rgba(7,4,13,0) 100%);
+  box-shadow:inset 0 0 18px rgba(216,180,106,.12);
+  transition:transform .16s cubic-bezier(.65,0,.35,1),opacity .12s ease;
 }
-.eye-live-wrap.eye-blinking .logo-eye{
-  clip-path:ellipse(50% 7% at 50% 50%);
-  filter:brightness(.92) drop-shadow(0 0 10px rgba(216,180,106,.12));
-  transform:scaleY(.98);
+.eye-blink-shutter:after{
+  content:"";position:absolute;left:7%;right:7%;top:50%;height:3px;
+  transform:translateY(-50%);border-radius:50%;
+  background:linear-gradient(90deg,transparent 0%,rgba(216,180,106,.72) 12%,#f0cf80 50%,rgba(216,180,106,.72) 88%,transparent 100%);
+  box-shadow:0 0 8px rgba(216,180,106,.28);
 }
-@media(max-width:430px){
-  .eye-live-wrap{width:112px;height:112px}
-}
-@media(prefers-reduced-motion:reduce){
-  .eye-live-wrap .logo-eye{transition:none}
-}
+.eye-live-wrap.eye-blinking .eye-blink-shutter{transform:scaleY(1);opacity:1}
+.eye-live-wrap.eye-blinking .logo-eye{filter:brightness(.94)}
+@media(max-width:430px){.eye-live-wrap{width:112px;height:112px}}
+@media(prefers-reduced-motion:reduce){.eye-blink-shutter{transition:none}}
 
 /* ESOTERIC · cielo dinámico */
 #esotericSky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.82}
@@ -316,6 +319,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   <div class="eye-live-wrap" aria-label="Símbolo del ojo ESOTERIC">
     <img class="logo-eye" src="esoteric-eye.webp" alt="ESOTERIC — símbolo del ojo">
     <span class="eye-iris-glow" aria-hidden="true"></span>
+    <span class="eye-blink-shutter" aria-hidden="true"></span>
   </div>
   <div class="brand">ESOTERIC</div>
   <h1>Guía y Consejero espiritual</h1>
@@ -934,14 +938,10 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
     const wrap=document.querySelector('.eye-live-wrap');
     const eye=document.querySelector('header .logo-eye');
     if(!wrap || !eye || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-
     function blink(){
       wrap.classList.add('eye-blinking');
-      // Cierra y abre con un parpadeo corto y natural.
-      setTimeout(function(){wrap.classList.remove('eye-blinking')},240);
+      setTimeout(function(){wrap.classList.remove('eye-blinking')},280);
     }
-
-    // Primer parpadeo después de cargar y luego cada 30 segundos.
     setTimeout(blink,2600);
     setInterval(blink,30000);
   }
