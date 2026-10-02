@@ -44,36 +44,25 @@ label{display:block;color:var(--gold);font-weight:700;margin:0 0 8px}input,texta
   width:100%;height:100%;margin:0;
   position:relative;z-index:1;
 }
-.eye-iris-glow{
-  position:absolute;
-  z-index:3;
-  left:50%;top:50%;
-  width:19%;height:19%;
-  transform:translate(-50%,-50%);
-  border-radius:50%;
-  pointer-events:none;
-  background:
-    radial-gradient(circle at 62% 38%,rgba(255,255,255,.95) 0 7%,rgba(255,255,255,.18) 8% 15%,transparent 18%),
-    radial-gradient(circle,rgba(4,3,8,.78) 0 28%,rgba(216,180,106,.36) 29% 47%,rgba(216,180,106,.08) 48% 62%,transparent 67%);
-  mix-blend-mode:screen;
-  opacity:.78;
-  filter:blur(.15px) drop-shadow(0 0 5px rgba(216,180,106,.32));
-  transition:transform 1.4s cubic-bezier(.22,.8,.25,1),opacity .7s ease;
+/* ESOTERIC · ojo vivo: sin movimiento de iris, parpadeo natural */
+.eye-iris-glow{display:none!important}
+.eye-live-wrap{overflow:hidden;border-radius:50%}
+.eye-live-wrap .logo-eye{
+  clip-path:ellipse(50% 50% at 50% 50%);
+  transition:clip-path .22s cubic-bezier(.65,0,.35,1),filter .22s ease,transform .22s ease;
+  will-change:clip-path,filter,transform;
 }
-.eye-live-wrap.eye-looking .eye-iris-glow{opacity:1}
+.eye-live-wrap.eye-blinking .logo-eye{
+  clip-path:ellipse(50% 7% at 50% 50%);
+  filter:brightness(.92) drop-shadow(0 0 10px rgba(216,180,106,.12));
+  transform:scaleY(.98);
+}
 @media(max-width:430px){
   .eye-live-wrap{width:112px;height:112px}
 }
 @media(prefers-reduced-motion:reduce){
-  .eye-iris-glow{transition:none}
+  .eye-live-wrap .logo-eye{transition:none}
 }
-
-/* ESOTERIC · ojo vivo */
-header .logo-eye{transition:transform 1.8s cubic-bezier(.22,.8,.25,1),filter 1.8s ease}
-header .logo-eye.eye-awake{
-  filter:brightness(1.12) drop-shadow(0 0 22px rgba(216,180,106,.28));
-}
-@media(prefers-reduced-motion:reduce){header .logo-eye{transition:none}}
 
 /* ESOTERIC · cielo dinámico */
 #esotericSky{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.82}
@@ -944,30 +933,17 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
   function initLivingEye(){
     const wrap=document.querySelector('.eye-live-wrap');
     const eye=document.querySelector('header .logo-eye');
-    const iris=document.querySelector('.eye-iris-glow');
-    if(!wrap || !eye || !iris || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
-    const gazes=[
-      [-8,-2,1.02], [7,-1,1.03], [4,5,1.01], [-6,4,1.025], [0,0,1]
-    ];
-    let index=0;
-    function gaze(){
-      const [x,y,scale]=gazes[index%gazes.length];
-      wrap.classList.add('eye-looking');
-      iris.style.transform='translate(calc(-50% + '+x+'px),calc(-50% + '+y+'px)) scale('+scale+')';
-      eye.style.transform='scale(1.008)';
-      setTimeout(function(){
-        iris.style.transform='translate(calc(-50% + '+(-x*.35)+'px),calc(-50% + '+(-y*.35)+'px)) scale(1)';
-      },900);
-      setTimeout(function(){
-        iris.style.transform='translate(-50%,-50%) scale(1)';
-        eye.style.transform='scale(1)';
-        wrap.classList.remove('eye-looking');
-      },2100);
-      index++;
+    if(!wrap || !eye || window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+
+    function blink(){
+      wrap.classList.add('eye-blinking');
+      // Cierra y abre con un parpadeo corto y natural.
+      setTimeout(function(){wrap.classList.remove('eye-blinking')},240);
     }
-    // First gaze shortly after load so the effect is immediately visible.
-    setTimeout(gaze,2200);
-    setInterval(gaze,30000);
+
+    // Primer parpadeo después de cargar y luego cada 30 segundos.
+    setTimeout(blink,2600);
+    setInterval(blink,30000);
   }
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',initLivingEye);
   else initLivingEye();
