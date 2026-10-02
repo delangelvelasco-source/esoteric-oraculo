@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ESOTERIC · Administración de citas</title>
+<title>ESOTERIC · Gestión de citas</title>
 <meta name="theme-color" content="#090612">
 <style>
 :root{--bg:#090612;--panel:#151024;--gold:#d8b46a;--text:#f7f2e8;--muted:#b8aec9;--line:#35274e;--green:#79d6a3;--red:#e98585;--blue:#8fb8ff}
@@ -23,7 +23,7 @@ label{display:block;color:var(--gold);font-weight:700;margin:14px 0 7px}input,se
 <div id="loginView" class="wrap">
   <div class="panel login">
     <div class="brand">ESOTERIC</div>
-    <h1>Administración de citas</h1>
+    <h1>Gestión de citas</h1>
     <p>Área privada · acceso exclusivo para administración</p>
     <form id="loginForm">
       <label for="email">Correo</label>
@@ -76,7 +76,7 @@ label{display:block;color:var(--gold);font-weight:700;margin:14px 0 7px}input,se
 </div>
 
 <script>
-const API='https://esoteric-api.delangel-velasco.workers.dev';
+const API='https://esoteric-citas.delangel-velasco.workers.dev';
 const TOKEN_KEY='esoteric_auth_token';
 const token=()=>localStorage.getItem(TOKEN_KEY)||'';
 async function api(path,options={}){
