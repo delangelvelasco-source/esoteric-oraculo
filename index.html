@@ -659,7 +659,8 @@ async function draw(){
   else normalDraw(last,n);
 
   document.getElementById('resultStatus').textContent=n+' cartas reveladas · '+(access.free?'lectura gratuita':'acceso autorizado');
-  document.getElementById('share').classList.add('visible');
+  const shareBtn=document.getElementById('share');
+  if(shareBtn) shareBtn.classList.add('visible');
   const leadCta=document.getElementById('leadCta');
   if(leadCta) leadCta.classList.add('visible');
   const q=document.getElementById('question')?.value?.trim()||'';
@@ -670,7 +671,8 @@ async function draw(){
 
   btn.classList.remove('loading');
   btn.textContent='🔮 Revelar otra vez';
-  document.getElementById('result').scrollIntoView({behavior:'smooth',block:'start'});
+  const resultEl=document.getElementById('result');
+  if(resultEl && typeof resultEl.scrollIntoView==='function') resultEl.scrollIntoView({behavior:'smooth',block:'start'});
 
  }catch(e){
   console.error('ESOTERIC access/draw error:',e);
