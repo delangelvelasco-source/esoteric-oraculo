@@ -163,7 +163,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 @media(max-width:800px){.app-shell{padding:0 10px 32px}.oracle-layout{grid-template-columns:1fr}.reading-panel{position:static}.app-welcome{padding:15px}.app-nav{top:4px}.app-nav a{font-size:10px;padding:10px 3px}}
 @media(max-width:430px){.app-nav a{font-size:9px}.app-welcome{align-items:flex-start}.plan-pill{font-size:9px;padding:7px 9px}}
 
-.access-cta{display:flex;justify-content:center;margin:10px 0 16px}.access-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 18px;border:1px solid rgba(216,180,106,.55);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.02em;transition:.2s}.access-cta a:hover{background:rgba(216,180,106,.16);border-color:var(--gold)}
+.access-cta{display:flex;justify-content:center;margin:10px 0 16px}.access-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 18px;border:1px solid rgba(216,180,106,.55);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.02em;transition:.2s}.access-cta a:hover{background:rgba(216,180,106,.16);border-color:var(--gold)}.account-state{display:none;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 16px;color:var(--muted);font-size:12px}.account-state strong{color:var(--gold)}.account-logout{border:1px solid rgba(216,180,106,.45);border-radius:999px;padding:8px 14px;background:rgba(216,180,106,.08);color:var(--gold);font-weight:800;font-size:11px;cursor:pointer}
 </style>
 </head>
 <body>
@@ -182,7 +182,11 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
     <a href="membresias.html">⭐ Membresía</a>
   </nav>
 
-  <div class="access-cta"><a href="acceso.html">🔐 Crear cuenta o iniciar sesión</a></div>
+  <div class="access-cta" id="accessCta"><a href="acceso.html">🔐 Crear cuenta o iniciar sesión</a></div>
+  <div class="account-state" id="accountState">
+    <span>✨ Sesión iniciada como <strong id="accountName"></strong></span>
+    <button type="button" class="account-logout" id="accountLogout">Cerrar sesión</button>
+  </div>
 
   <section class="panel auth-panel" id="authPanel">
     <div id="authForms">
@@ -469,16 +473,24 @@ async function loadMembershipForUser(userId){
 function updateAuthUI(user,membership){
   const forms=document.getElementById('authForms');
   const authUser=document.getElementById('authUser');
+  const accessCta=document.getElementById('accessCta');
+  const accountState=document.getElementById('accountState');
+  const accountName=document.getElementById('accountName');
   if(!user){
-    forms.style.display='block';
-    authUser.style.display='none';
+    if(forms) forms.style.display='block';
+    if(authUser) authUser.style.display='none';
+    if(accessCta) accessCta.style.display='flex';
+    if(accountState) accountState.style.display='none';
     return;
   }
-  forms.style.display='none';
-  authUser.style.display='block';
+  if(forms) forms.style.display='none';
+  if(authUser) authUser.style.display='block';
   document.getElementById('authUserName').textContent=user.name||user.email;
   document.getElementById('authMembership').textContent=
     membership ? ('Membresía: '+(membership.plan_id||membership.plan||'')+' · '+membership.status) : 'Sin membresía activa';
+  if(accessCta) accessCta.style.display='none';
+  if(accountState) accountState.style.display='flex';
+  if(accountName) accountName.textContent=user.name||user.email;
 }
 
 async function initAuth(){
@@ -516,11 +528,13 @@ document.getElementById('loginForm').addEventListener('submit',async e=>{
   }
 });
 
-document.getElementById('logoutBtn').onclick=async()=>{
+async function logoutEsoteric(){
   try{ await apiJson('/logout',{method:'POST'}); }catch(e){}
   setAuthToken('');
   updateAuthUI(null,null);
-};
+}
+document.getElementById('logoutBtn').onclick=logoutEsoteric;
+document.getElementById('accountLogout').onclick=logoutEsoteric;
 
 const spreadTypeMap={
   1:'carta-dia',
