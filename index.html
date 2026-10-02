@@ -1015,6 +1015,15 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
   const slotsEl=document.getElementById('agendaSlots');
   if(!dateEl||!dayEl||!slotsEl)return;
   const wa='528123859824';
+  const prefix='22';
+  const folioKey='esoteric_cita_consecutivo_';
+  function getFolio(d){
+    const y=String(d.getFullYear()).slice(-2),m=pad(d.getMonth()+1),day=pad(d.getDate());
+    const key=folioKey+y+m+day;
+    const n=(parseInt(localStorage.getItem(key)||'0',10)+1);
+    localStorage.setItem(key,String(n));
+    return prefix+y+m+day+String(n).padStart(3,'0');
+  }
   const pad=n=>String(n).padStart(2,'0');
   const fmtDate=d=>new Intl.DateTimeFormat('es-MX',{weekday:'long',day:'numeric',month:'long'}).format(d);
   const makeSlots=(startHour,endHour)=>{
