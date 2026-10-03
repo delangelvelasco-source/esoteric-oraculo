@@ -1348,12 +1348,10 @@ document.addEventListener('DOMContentLoaded',function(){
 document.addEventListener('DOMContentLoaded',function(){
   if(!document.documentElement.classList.contains('reading-route'))return;
   var result=document.getElementById('result');
-  if(!result||document.querySelector('.reading-visit-counter'))return;
-  var badge=document.createElement('div');
-  badge.className='reading-visit-counter';
-  badge.setAttribute('aria-label','Contador de visitas');
-  badge.innerHTML='<span aria-hidden="true">👁️</span><span>Visitas</span><div class="counterapi" ns="esoteric-oraculo" action="view" key="site-visits" label="visitas" noLink="true" noCss="true"></div>';
-  result.appendChild(badge);
+  var counter=document.querySelector('.visit-counter');
+  if(!result||!counter)return;
+  counter.classList.add('reading-visit-counter');
+  result.appendChild(counter);
 });
 </script>
 </body>
