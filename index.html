@@ -853,6 +853,15 @@ html.reading-route .reading-visit-counter{display:none}
   }
 }
 </style>
+<style id="esoteric-mobile-selector-final">
+/* En móvil y escritorio normal: selector nativo, sin botones de tiradas. */
+.tv-spread-options{display:none!important}
+#spread{display:block!important;position:static!important;left:auto!important;width:100%!important;height:auto!important;opacity:1!important;pointer-events:auto!important}
+@media (min-width:1200px) and (orientation:landscape){
+  .tv-spread-options{display:grid!important}
+  #spread{position:absolute!important;left:-9999px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important}
+}
+</style>
 </head>
 <body>
 <header>
