@@ -345,6 +345,13 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 
 .access-cta{display:flex;justify-content:center;margin:10px 0 16px}.access-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:40px;padding:9px 18px;border:1px solid rgba(216,180,106,.55);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-size:12px;font-weight:800;letter-spacing:.02em;transition:.2s}.access-cta a:hover{background:rgba(216,180,106,.16);border-color:var(--gold)}.account-state{display:none;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;margin:10px 0 16px;color:var(--muted);font-size:12px}.account-state strong{color:var(--gold)}.account-logout{border:1px solid rgba(216,180,106,.45);border-radius:999px;padding:8px 14px;background:rgba(216,180,106,.08);color:var(--gold);font-weight:800;font-size:11px;cursor:pointer}.logged-in .app-nav{border-color:rgba(216,180,106,.38);box-shadow:0 8px 30px rgba(216,180,106,.06)}.logged-in .hero-copy{margin:0 auto;padding:12px 18px 14px;max-width:720px;border:1px solid rgba(216,180,106,.16);border-radius:18px;background:linear-gradient(180deg,rgba(39,27,61,.38),rgba(14,9,24,.18));box-shadow:inset 0 0 25px rgba(216,180,106,.025)}.logged-in .free-badge{border-color:rgba(216,180,106,.65);background:rgba(216,180,106,.08)}.logged-in .account-state{padding:10px 14px;border:1px solid rgba(216,180,106,.24);border-radius:16px;background:linear-gradient(180deg,rgba(35,25,54,.9),rgba(15,10,26,.9));box-shadow:0 10px 24px rgba(0,0,0,.2);width:max-content;max-width:100%;margin:8px auto 16px}
 
+
+/* ESOTERIC · testimonios */
+.testimonials-panel{padding:24px 20px 22px;background:linear-gradient(145deg,rgba(35,25,54,.92),rgba(12,8,21,.96));border-color:rgba(216,180,106,.25)}
+.testimonials-head{text-align:center;max-width:720px;margin:0 auto 18px}.testimonials-head h2{font-family:Georgia,serif;font-weight:500;margin:0 0 7px;font-size:clamp(24px,5vw,32px)}.testimonials-head p{margin:0;color:var(--muted);font-size:13px;line-height:1.5}
+.testimonials-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.testimonial-card{position:relative;min-height:145px;padding:18px 16px;border:1px solid rgba(216,180,106,.22);border-radius:18px;background:linear-gradient(180deg,rgba(24,16,40,.9),rgba(10,7,18,.82));box-shadow:0 12px 28px rgba(0,0,0,.22);overflow:hidden}.testimonial-card:before{content:"“";position:absolute;right:10px;top:-9px;color:rgba(216,180,106,.12);font-family:Georgia,serif;font-size:76px;line-height:1}.testimonial-stars{color:var(--gold);font-size:13px;letter-spacing:.08em;margin-bottom:9px}.testimonial-card p{position:relative;margin:0;color:#eee6f1;font-family:Georgia,serif;font-size:14px;line-height:1.55}.testimonial-note{display:block;margin-top:12px;color:#9f94aa;font-size:10px;letter-spacing:.04em;text-transform:uppercase}.testimonials-cta{display:flex;justify-content:center;margin-top:17px}.testimonials-cta a{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border:1px solid rgba(216,180,106,.55);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-size:12px;font-weight:800}.testimonials-cta a:hover{background:rgba(216,180,106,.15)}
+@media(max-width:800px){.testimonials-grid{grid-template-columns:1fr}.testimonial-card{min-height:auto}}
+
 </style>
 </head>
 <body>
@@ -451,6 +458,35 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
     <div class="section-label">03 · TU MEMBRESÍA</div>
     <h2>⭐ Acceso ESOTERIC</h2>
     <p id="membershipSummary">Crea tu cuenta y consulta las opciones de membresía para acceder a las diferentes tiradas de ESOTERIC.</p>
+  </section>
+
+
+  <section class="panel testimonials-panel" id="testimonios">
+    <div class="testimonials-head">
+      <div class="section-label">04 · TESTIMONIOS</div>
+      <h2>✨ Tu experiencia también cuenta</h2>
+      <p>Este espacio está preparado para mostrar las opiniones reales de quienes han consultado en ESOTERIC.</p>
+    </div>
+    <div class="testimonials-grid">
+      <article class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p>“Comparte aquí tu experiencia después de realizar tu consulta.”</p>
+        <span class="testimonial-note">Espacio para testimonio verificado</span>
+      </article>
+      <article class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p>“Cuéntanos qué te pareció la atención, la lectura y tu experiencia con ESOTERIC.”</p>
+        <span class="testimonial-note">Espacio para testimonio verificado</span>
+      </article>
+      <article class="testimonial-card">
+        <div class="testimonial-stars">★★★★★</div>
+        <p>“Tu opinión puede ayudar a otras personas a conocer cómo funciona una consulta.”</p>
+        <span class="testimonial-note">Espacio para testimonio verificado</span>
+      </article>
+    </div>
+    <div class="testimonials-cta">
+      <a href="https://wa.me/528123859824?text=Hola%20ESOTERIC%20%F0%9F%94%AE%20Quiero%20compartir%20mi%20experiencia%20como%20testimonio." target="_blank" rel="noopener">💬 Compartir mi experiencia</a>
+    </div>
   </section>
 
   <section class="panel" style="display:none"><h2>Los 78 Arcanos</h2><div class="filters"></div><div class="gallery" id="gallery"></div></section>
