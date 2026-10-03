@@ -6,7 +6,7 @@
 <title>ESOTERIC | Tarot y Oráculo en línea · Lecturas personalizadas</title>
 <meta name="description" content="ESOTERIC ofrece lecturas de Tarot y Oráculo en línea, personalizadas por chat o llamada. Conoce las opciones de consulta, precios y horarios disponibles.">
 <meta name="theme-color" content="#0a0712">
-<meta name="esoteric-version" content="2026-10-03-1036">
+<meta name="esoteric-version" content="2026-10-03-1048">
 <meta property="og:title" content="ESOTERIC | Tarot y Oráculo en línea">
 <meta property="og:description" content="ESOTERIC · Tarot y Oráculo en línea. Lecturas personalizadas por chat o llamada. Consulta precios y agenda tu lectura.">
 <meta property="og:type" content="website">
@@ -355,6 +355,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
 .testimonials-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.testimonial-card{position:relative;min-height:145px;padding:18px 16px;border:1px solid rgba(216,180,106,.22);border-radius:18px;background:linear-gradient(180deg,rgba(24,16,40,.9),rgba(10,7,18,.82));box-shadow:0 12px 28px rgba(0,0,0,.22);overflow:hidden}.testimonial-card:before{content:"“";position:absolute;right:10px;top:-9px;color:rgba(216,180,106,.12);font-family:Georgia,serif;font-size:76px;line-height:1}.testimonial-stars{color:var(--gold);font-size:13px;letter-spacing:.08em;margin-bottom:9px}.testimonial-card p{position:relative;margin:0;color:#eee6f1;font-family:Georgia,serif;font-size:14px;line-height:1.55}.testimonial-note{display:block;margin-top:12px;color:#9f94aa;font-size:10px;letter-spacing:.04em;text-transform:uppercase}.testimonials-cta{display:flex;justify-content:center;margin-top:17px}.testimonials-cta a{display:inline-flex;align-items:center;justify-content:center;padding:11px 18px;border:1px solid rgba(216,180,106,.55);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-size:12px;font-weight:800}.testimonials-cta a:hover{background:rgba(216,180,106,.15)}
 @media(max-width:800px){.testimonials-grid{grid-template-columns:1fr}.testimonial-card{min-height:auto}}
 
+.oracle-layout.oracle-hidden{display:none!important}
 </style>
 </head>
 <body>
@@ -410,7 +411,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
     </div>
   </section>
 
-  <section class="oracle-layout" id="oraculo">
+  <section class="oracle-layout oracle-hidden" id="oraculo">
     <div class="panel reading-panel">
       <div class="section-label">01 · TU LECTURA</div>
       <h2>🔮 Haz tu pregunta al Tarot</h2>
@@ -1072,6 +1073,33 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
 })();
 </script>
 
+
+<script>
+(function(){
+  function showOracle(){
+    const oracle=document.getElementById('oraculo');
+    if(!oracle)return;
+    oracle.classList.remove('oracle-hidden');
+    setTimeout(function(){
+      oracle.scrollIntoView({behavior:'smooth',block:'start'});
+    },40);
+  }
+  const start=document.querySelector('.hero-start');
+  if(start){
+    start.addEventListener('click',function(e){
+      e.preventDefault();
+      showOracle();
+    });
+  }
+  const tarotNav=document.querySelector('.app-nav a[href="#oraculo"]');
+  if(tarotNav){
+    tarotNav.addEventListener('click',function(e){
+      e.preventDefault();
+      showOracle();
+    });
+  }
+})();
+</script>
 </body>
 </body>
 </html>
