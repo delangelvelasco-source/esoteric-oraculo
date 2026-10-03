@@ -76,8 +76,7 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
         let phone=prompt('¿Cuál es tu WhatsApp?')?.trim()||'';
         if(!phone){alert('Necesitamos tu WhatsApp para confirmar la cita.');return}
         b.disabled=true;b.textContent='…';
-        try{
-          const token=localStorage.getItem('esoteric_auth_token')||'';
+        const token=localStorage.getItem('esoteric_auth_token')||'';
           const headers={'Content-Type':'application/json','Accept':'application/json'};
           if(token)headers.Authorization='Bearer '+token;
           const payload={date:dateEl.value,time,client_name:name,client_phone:phone,service:'Lectura de Tarot',duration_minutes:15};
@@ -96,6 +95,7 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
             window.location.href='https://wa.me/'+wa+'?text='+encodeURIComponent(msg);
             b.textContent='✓ '+time;b.disabled=true;
           }
+        }
       });
       slotsEl.appendChild(b);
     });
