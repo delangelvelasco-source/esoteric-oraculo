@@ -1324,7 +1324,7 @@ initAuth();updateSpreadDescription();
 async function loadShareCard(url){
   return new Promise(resolve=>{
     const sources=[
-      url,
+      // Evita cargar Wikimedia directamente: puede contaminar el canvas en iPhone.
       'https://images.weserv.nl/?url='+encodeURIComponent(url)+'&output=png',
       'https://wsrv.nl/?url='+encodeURIComponent(url)+'&output=png',
       'https://images.weserv.nl/?url='+encodeURIComponent(url)
