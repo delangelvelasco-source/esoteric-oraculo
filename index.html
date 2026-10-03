@@ -1364,7 +1364,7 @@ async function buildSpreadImage(){
   x.strokeStyle='rgba(216,180,106,.5)';x.lineWidth=1.5;x.beginPath();x.moveTo(80,infoY+12);x.lineTo(w-80,infoY+12);x.stroke();
   const startY=Math.max(infoY+40,top);
   const imgs=await Promise.all(last.map(c=>loadShareCard(c.src)));
-  const failed=imgs.filter(Boolean).length!==imgs.length;
+  const failed=imgs.some(im=>!im);
   last.forEach((c,i)=>{
     const col=i%cols,row=Math.floor(i/cols),x0=(w-(cols*cardW+(cols-1)*gap))/2+col*(cardW+gap),y0=startY+row*rowStep;
     x.save();x.shadowColor='rgba(216,180,106,.28)';x.shadowBlur=18;x.strokeStyle='#d8b46a';x.lineWidth=2;x.strokeRect(x0-4,y0-4,cardW+8,cardH+8);x.shadowBlur=0;
