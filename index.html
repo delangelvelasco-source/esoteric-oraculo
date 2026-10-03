@@ -554,6 +554,31 @@ html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;o
   html.reading-route body .oracle-layout #result .future-grid .card{box-shadow:0 4px 12px rgba(0,0,0,.35)}
 }
 </style>
+
+<style id="esoteric-tv-celtic-full">
+/* TV 16:9 · Cruz Celta de 10 cartas completa */
+@media (min-width:1200px) and (orientation:landscape){
+  html.reading-route body .oracle-layout #result .celtic-wrap{width:100%;height:calc(100% - 42px);min-height:0;overflow:hidden;padding:2px}
+  html.reading-route body .oracle-layout #result .celtic{width:100%;height:100%;display:grid;grid-template-columns:1fr 1.15fr 1fr .82fr;grid-template-rows:1fr 1.35fr 1fr;gap:5px;align-items:center;justify-items:center}
+  html.reading-route body .oracle-layout #result .celtic .cslot{min-width:0;max-width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  html.reading-route body .oracle-layout #result .celtic .cslot .card{width:clamp(64px,6.2vw,94px);max-width:94px}
+  html.reading-route body .oracle-layout #result .celtic .cslot .pos{font-size:7px;line-height:1.05;min-height:12px;margin-bottom:2px;text-align:center}
+  html.reading-route body .oracle-layout #result .celtic .cslot .name{font-size:6.5px;line-height:1.05;margin-top:2px;max-width:100%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html.reading-route body .oracle-layout #result .celtic .cslot .orientation{font-size:5.5px;margin-top:1px}
+  html.reading-route body .oracle-layout #result .celtic .p3{grid-column:2;grid-row:1}
+  html.reading-route body .oracle-layout #result .celtic .cross{grid-column:2;grid-row:2;width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center}
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2}
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child .card{width:clamp(62px,5.8vw,88px)}
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2){position:absolute!important;left:50%;top:50%;transform:translate(-50%,-50%)!important;width:100%;height:100%;display:flex;align-items:center;justify-content:center;z-index:3}
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2) .card{width:clamp(58px,5.2vw,80px);transform:rotate(90deg)}
+  html.reading-route body .oracle-layout #result .celtic .p4{grid-column:2;grid-row:3}
+  html.reading-route body .oracle-layout #result .celtic .p5{grid-column:1;grid-row:2}
+  html.reading-route body .oracle-layout #result .celtic .p6{grid-column:3;grid-row:2}
+  html.reading-route body .oracle-layout #result .celtic .side{grid-column:4;grid-row:1/4;width:100%;height:100%;display:grid;grid-template-rows:repeat(4,1fr);gap:3px;align-items:center;justify-items:center}
+  html.reading-route body .oracle-layout #result .celtic .side .cslot{width:100%;height:100%}
+  html.reading-route body .oracle-layout #result .celtic .side .cslot .card{width:clamp(55px,5.2vw,78px);max-width:78px}
+}
+</style>
 </head>
 <body>
 <header>
