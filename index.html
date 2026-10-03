@@ -1421,7 +1421,7 @@ async function loadShareCard(url){
 }
 async function buildSpreadImage(){
   if(!last.length) throw new Error('No hay cartas para compartir');
-  const w=1080,count=last.length,cols=count===1?1:count===2?2:count<=9?3:4,gap=count<=2?28:22,cardW=count===1?420:Math.min(280,Math.floor((w-140-(cols-1)*gap)/cols)),cardH=Math.round(cardW/0.58),labelH=70,rows=Math.ceil(count/cols),top=155,rowStep=cardH+labelH+gap,bottom=70,h=Math.max(900,top+rows*rowStep-gap+bottom),cv=document.createElement('canvas');
+  const w=900,count=last.length,cols=count===1?1:count===2?2:count<=9?3:4,gap=count<=2?28:22,cardW=count===1?420:Math.min(280,Math.floor((w-140-(cols-1)*gap)/cols)),cardH=Math.round(cardW/0.58),labelH=70,rows=Math.ceil(count/cols),top=155,rowStep=cardH+labelH+gap,bottom=70,h=Math.max(900,top+rows*rowStep-gap+bottom),cv=document.createElement('canvas');
   cv.width=w;cv.height=h;
   const x=cv.getContext('2d');
   if(!x) throw new Error('Canvas no disponible');
@@ -1453,9 +1453,45 @@ async function buildSpreadImage(){
     x.restore();x.fillStyle='#d8b46a';x.font='700 16px system-ui';x.fillText((i+1)+'. '+(positions[+document.getElementById('spread').value]?.[i]||'Carta '+(i+1)),x0+cardW/2,y0+cardH+25);x.fillStyle='#f7f2e8';x.font='600 16px system-ui';x.fillText((c.displayName||c.name)+(c.reversed?' · INVERTIDA':' · AL DERECHO'),x0+cardW/2,y0+cardH+49);
   });
   x.fillStyle='#8f829f';x.font='13px system-ui';x.fillText('Lectura simbólica · ESOTERIC',w/2,h-22);
-  return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('png')),'image/png',.95));
+  return new Promise((resolve,reject)=>cv.toBlob(b=>b?resolve(b):reject(new Error('jpeg')),'image/jpeg',.88));
 }
-document.getElementById('share').addEventListener('click',async()=>{if(!last.length)return;try{const blob=await buildSpreadImage();const file=new File([blob],'esoteric-mi-lectura.png',{type:'image/png'});if(navigator.share){if(!navigator.canShare||navigator.canShare({files:[file]})){await navigator.share({files:[file],text:'Hola ESOTERIC 🔮 Acabo de consultar el Oráculo y quiero una lectura personalizada.',title:'ESOTERIC · Mi lectura'});return}}const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='esoteric-mi-lectura.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000);alert('La imagen de tu tirada está lista. En WhatsApp, adjunta esta imagen.');}catch(e){if(e.name!=='AbortError'){console.error('Share error',e);try{const blob=await buildSpreadImage();const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='esoteric-mi-lectura.png';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),3000);alert('La imagen se generó correctamente. Si WhatsApp no la adjunta automáticamente, abre la imagen descargada y compártela desde Fotos.');}catch(e2){console.error('Image build error',e2);alert('No se pudo generar la imagen de la lectura.')}}}});const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+document.getElementById('share').addEventListener('click',async()=>{
+  const btn=document.getElementById('share');
+  if(!last.length){alert('Primero revela tu lectura.');return}
+  const original=btn.textContent;
+  btn.disabled=true;btn.textContent='⏳ Preparando tu lectura…';
+  try{
+    const blob=await buildSpreadImage();
+    const file=new File([blob],'esoteric-mi-lectura.jpg',{type:'image/jpeg'});
+    const text='Hola ESOTERIC 🔮 Acabo de consultar el Oráculo y quiero compartir mi lectura.';
+    if(navigator.share){
+      let canFile=true;
+      try{canFile=!navigator.canShare||navigator.canShare({files:[file]})}catch(_){canFile=false}
+      if(canFile){
+        await navigator.share({files:[file],text,title:'ESOTERIC · Mi lectura'});
+        return;
+      }
+    }
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');
+    a.href=url;a.download='esoteric-mi-lectura.jpg';document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),5000);
+    const wa='https://wa.me/?text='+encodeURIComponent(text);
+    const open=document.createElement('a');
+    open.href=wa;open.target='_blank';open.rel='noopener';open.textContent='💬 Abrir WhatsApp';
+    open.style='display:block;margin-top:10px;text-align:center;background:#25d366;color:#07150c;padding:12px;border-radius:12px;font-weight:800;text-decoration:none';
+    const parent=btn.parentElement;
+    if(!parent.querySelector('.share-fallback')){open.className='share-fallback';parent.appendChild(open)}
+    alert('Tu lectura se guardó como imagen. Ahora puedes abrir WhatsApp y adjuntarla.');
+  }catch(e){
+    if(e.name!=='AbortError'){
+      console.error('Share error',e);
+      alert('No se pudo preparar la imagen. Intenta nuevamente.');
+    }
+  }finally{
+    btn.disabled=false;btn.textContent=original;
+  }
+});const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
 <script>(function(){const el=document.querySelector('.visit-counter .counterapi');if(!el)return;const reveal=()=>{if(el.textContent.trim())el.classList.add('ready')};reveal();new MutationObserver(reveal).observe(el,{childList:true,subtree:true,characterData:true});})();</script><script src="https://counterapi.com/c.js?ns=esoteric-oraculo" async></script>
 <script>
