@@ -401,6 +401,65 @@ body.reading-mode .app-shell > .oracle-layout{display:block!important}
 body.reading-mode .oracle-layout.oracle-hidden{display:block!important}
 body.reading-mode .app-nav{position:sticky;top:0;z-index:20;margin-bottom:14px}
 @media(max-width:700px){.reading-back{width:100%;max-width:360px}}
+/* ESOTERIC · botones de navegación premium */
+.app-nav{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:10px!important;
+  padding:10px!important;
+  margin:8px 0 18px!important;
+  border:1px solid rgba(216,180,106,.28)!important;
+  border-radius:22px!important;
+  background:linear-gradient(145deg,rgba(28,18,45,.94),rgba(9,6,18,.96))!important;
+  box-shadow:0 14px 38px rgba(0,0,0,.34),inset 0 1px 0 rgba(255,255,255,.045),inset 0 0 30px rgba(111,70,150,.08)!important;
+  backdrop-filter:blur(16px);
+}
+.app-nav a{
+  position:relative;
+  display:flex!important;
+  align-items:center;
+  justify-content:center;
+  min-height:58px;
+  padding:10px 8px!important;
+  border:1px solid rgba(216,180,106,.16);
+  border-radius:16px!important;
+  color:#eee8f3!important;
+  text-decoration:none;
+  text-align:center;
+  font-size:clamp(12px,1.2vw,15px)!important;
+  font-weight:800;
+  letter-spacing:.01em;
+  background:linear-gradient(145deg,rgba(48,32,67,.72),rgba(16,10,28,.92));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.045),0 6px 18px rgba(0,0,0,.20);
+  transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease,color .18s ease;
+}
+.app-nav a:hover,
+.app-nav a:focus-visible{
+  color:#f6d98e!important;
+  border-color:rgba(216,180,106,.48);
+  background:linear-gradient(145deg,rgba(91,58,118,.62),rgba(29,18,44,.96));
+  box-shadow:0 8px 24px rgba(216,180,106,.10),inset 0 1px 0 rgba(255,255,255,.07);
+  transform:translateY(-2px);
+  outline:none;
+}
+.app-nav a:active{transform:translateY(0) scale(.985)}
+.app-nav a.active{
+  color:#f7dc93!important;
+  border-color:rgba(216,180,106,.62)!important;
+  background:linear-gradient(145deg,rgba(100,67,129,.72),rgba(35,22,51,.98))!important;
+  box-shadow:0 8px 26px rgba(216,180,106,.12),inset 0 0 0 1px rgba(216,180,106,.10),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+@media (min-width:1200px) and (orientation:landscape){
+  .app-nav{max-width:1180px;margin-left:auto!important;margin-right:auto!important;padding:12px!important;gap:14px!important}
+  .app-nav a{min-height:68px;font-size:18px!important;border-radius:18px!important}
+}
+@media (max-width:600px){
+  .app-nav{gap:6px!important;padding:7px!important;border-radius:18px!important}
+  .app-nav a{min-height:48px;padding:8px 4px!important;font-size:10px!important;border-radius:13px!important}
+}
+@media (prefers-reduced-motion:reduce){
+  .app-nav a{transition:none}
+}
 </style>
 <script>(function(){if(new URLSearchParams(location.search).get('modo')==='lectura'){document.documentElement.classList.add('reading-route');document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('reading-mode');var o=document.getElementById('oraculo');if(o)o.classList.remove('oracle-hidden');document.querySelectorAll('.app-nav a,.reading-back').forEach(function(a){a.target='_top';});});}})();</script>
 </head>
