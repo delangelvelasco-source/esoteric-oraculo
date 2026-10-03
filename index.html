@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>ESOTERIC | Tarot y Oráculo en línea · Lecturas personalizadas</title>
+<title>ESOTERIC | Mi lectura</title>
 <meta name="description" content="ESOTERIC ofrece lecturas de Tarot y Oráculo en línea, personalizadas por chat o llamada. Conoce las opciones de consulta, precios y horarios disponibles.">
 <meta name="theme-color" content="#0a0712">
-<meta name="esoteric-version" content="2026-10-03-1052">
+<meta name="esoteric-version" content="2026-10-03-1124">
 <meta property="og:title" content="ESOTERIC | Tarot y Oráculo en línea">
 <meta property="og:description" content="ESOTERIC · Tarot y Oráculo en línea. Lecturas personalizadas por chat o llamada. Consulta precios y agenda tu lectura.">
 <meta property="og:type" content="website">
@@ -388,7 +388,21 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   .panel{padding:34px}
 }
 
+
+/* ESOTERIC · página independiente de lectura */
+.reading-back{display:flex;align-items:center;justify-content:center;width:max-content;min-height:44px;padding:10px 18px;margin:0 auto 16px;border:1px solid rgba(216,180,106,.5);border-radius:999px;background:rgba(216,180,106,.08);color:var(--gold);text-decoration:none;font-weight:800}
+.reading-back:hover{background:rgba(216,180,106,.15)}
+body.reading-mode{min-height:100vh}
+body.reading-mode header{display:none}
+body.reading-mode .app-shell{padding-top:10px}
+body.reading-mode .app-shell > *{display:none!important}
+body.reading-mode .app-shell > .app-nav{display:flex!important}
+body.reading-mode .app-shell > .oracle-layout{display:block!important}
+body.reading-mode .oracle-layout.oracle-hidden{display:block!important}
+body.reading-mode .app-nav{position:sticky;top:0;z-index:20;margin-bottom:14px}
+@media(max-width:700px){.reading-back{width:100%;max-width:360px}}
 </style>
+<script>(function(){if(new URLSearchParams(location.search).get('modo')==='lectura'){document.documentElement.classList.add('reading-route');document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('reading-mode');var o=document.getElementById('oraculo');if(o)o.classList.remove('oracle-hidden');});}})();</script>
 </head>
 <body>
 <header>
@@ -403,7 +417,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   <h1>Dale sentido a lo que sientes</h1>
   <div class="hero-copy"><p><strong>Lecturas de Tarot en línea.</strong><br><span style="color:#d8b46a;font-weight:700">Encuentra claridad, orientación y nuevas perspectivas.</span></p></div>
   <div class="hero-free">✨ Tu primera pregunta gratis</div>
-  <a class="hero-start" href="#oraculo">Empezar mi lectura</a>
+  <a class="hero-start" href="lectura.html">Empezar mi lectura</a>
 </header>
 
 <div class="app-shell">
@@ -443,6 +457,7 @@ header .brand{text-shadow:0 0 24px rgba(216,180,106,.18)}
   </section>
 
   <section class="oracle-layout oracle-hidden" id="oraculo">
+    <a class="reading-back" href="index.html" aria-label="Regresar a la portada">← Regresar a ESOTERIC</a>
     <div class="panel reading-panel">
       <div class="section-label">01 · TU LECTURA</div>
       <h2>Haz tu pregunta al Tarot</h2>
