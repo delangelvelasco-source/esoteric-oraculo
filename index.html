@@ -495,6 +495,32 @@ body.reading-mode .reading-panel::-webkit-scrollbar-thumb,body.reading-mode #res
   body.reading-mode .reading-back{font-size:11px;padding:6px 10px!important}
 }
 </style>
+
+<style id="esoteric-reading-no-flash">
+/* ESOTERIC · evita el salto inicial del modo lectura */
+html.reading-route body{overflow:hidden}
+html.reading-route body header{display:none!important}
+html.reading-route body .app-shell{width:100%;height:100%;max-width:none;padding:10px 14px 14px!important;margin:0!important;overflow:hidden}
+html.reading-route body .app-shell > *{display:none!important}
+html.reading-route body .app-shell > .oracle-layout{display:grid!important;grid-template-columns:minmax(300px,36vw) minmax(0,1fr);grid-template-rows:auto minmax(0,1fr);gap:12px!important;width:100%;height:100%;max-width:none;margin:0!important;padding:0!important;overflow:hidden}
+html.reading-route body .app-shell > .oracle-layout.oracle-hidden{display:grid!important}
+html.reading-route body .oracle-layout .reading-back{grid-column:1/-1;grid-row:1;justify-self:start;width:auto;margin:0!important;padding:9px 16px!important;z-index:5}
+html.reading-route body .oracle-layout .reading-panel{grid-column:1;grid-row:2;min-width:0;min-height:0;height:100%;overflow:auto;margin:0!important;padding:22px!important}
+html.reading-route body .oracle-layout #result{grid-column:2;grid-row:2;min-width:0;min-height:0;height:100%;overflow:auto;margin:0!important;padding:22px!important}
+@media (orientation:portrait){
+  html.reading-route body{height:auto;min-height:100%;overflow:auto}
+  html.reading-route body .app-shell{height:auto;min-height:100vh;overflow:visible;padding:10px!important}
+  html.reading-route body .app-shell > .oracle-layout{grid-template-columns:1fr;grid-template-rows:auto auto auto;height:auto;min-height:calc(100vh - 20px);overflow:visible}
+  html.reading-route body .oracle-layout .reading-back{grid-column:1;grid-row:1}
+  html.reading-route body .oracle-layout .reading-panel{grid-column:1;grid-row:2;height:auto;overflow:visible}
+  html.reading-route body .oracle-layout #result{grid-column:1;grid-row:3;height:auto;overflow:visible}
+}
+@media (max-width:520px) and (orientation:landscape){
+  html.reading-route body .app-shell{padding:6px!important}
+  html.reading-route body .app-shell > .oracle-layout{grid-template-columns:minmax(235px,42%) minmax(0,58%);gap:7px!important}
+  html.reading-route body .oracle-layout .reading-panel,html.reading-route body .oracle-layout #result{padding:12px!important;border-radius:16px}
+}
+</style>
 </head>
 <body>
 <header>
