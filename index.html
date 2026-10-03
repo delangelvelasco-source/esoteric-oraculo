@@ -1123,26 +1123,13 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
 
 <script>
 (function(){
-  function showOracle(){
-    const oracle=document.getElementById('oraculo');
-    if(!oracle)return;
-    oracle.classList.remove('oracle-hidden');
-    setTimeout(function(){
-      oracle.scrollIntoView({behavior:'smooth',block:'start'});
-    },40);
-  }
+  // La portada no revela el oráculo: la lectura vive en una página independiente.
   const start=document.querySelector('.hero-start');
   if(start){
-    start.addEventListener('click',function(e){
-      e.preventDefault();
-      showOracle();
-    });
-  }
-  const tarotNav=document.querySelector('.app-nav a[href="#oraculo"]');
-  if(tarotNav){
-    tarotNav.addEventListener('click',function(e){
-      e.preventDefault();
-      showOracle();
+    start.href='lectura.html';
+    start.removeAttribute('onclick');
+    start.addEventListener('click',function(){
+      window.location.href='lectura.html';
     });
   }
 })();
