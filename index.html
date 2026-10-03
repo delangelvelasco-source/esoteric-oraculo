@@ -523,14 +523,17 @@ html.reading-route body .oracle-layout #result{grid-column:2;grid-row:2;min-widt
 </style>
 
 <style id="esoteric-tv-spread-picker">
-html.reading-route .tv-spread-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
-html.reading-route .tv-spread-options .spread-option{min-height:58px;border:1px solid rgba(118,83,153,.7);border-radius:14px;background:linear-gradient(145deg,rgba(27,18,44,.98),rgba(10,7,19,.98));color:#f7f2e8;padding:10px 12px;text-align:left;font-size:15px;line-height:1.15;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:4px;box-shadow:inset 0 0 14px rgba(83,47,111,.08)}
-html.reading-route .tv-spread-options .spread-option span{font-size:11px;color:#aaa0b4;font-weight:600}
-html.reading-route .tv-spread-options .spread-option.active{border-color:#d8b46a;background:linear-gradient(145deg,rgba(76,48,102,.95),rgba(29,18,48,.98));box-shadow:0 0 0 2px rgba(216,180,106,.16),inset 0 0 18px rgba(216,180,106,.08)}
-html.reading-route .tv-spread-options .spread-option:focus-visible{outline:3px solid #f0cc78;outline-offset:2px}
-html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
-@media (max-width:520px) and (orientation:landscape){html.reading-route .tv-spread-options{gap:6px}.tv-spread-options .spread-option{min-height:48px!important;font-size:12px!important;padding:7px 9px!important}}
-@media (orientation:portrait){html.reading-route .tv-spread-options{grid-template-columns:1fr}.tv-spread-options .spread-option{min-height:52px}}
+/* Selector original en móvil y escritorio; botones visuales SOLO en TV horizontal. */
+html.reading-route .tv-spread-options{display:none}
+html.reading-route #spread{position:static;left:auto;width:auto;height:auto;opacity:1;pointer-events:auto}
+@media (min-width:1200px) and (orientation:landscape){
+  html.reading-route .tv-spread-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+  html.reading-route .tv-spread-options .spread-option{min-height:58px;border:1px solid rgba(118,83,153,.7);border-radius:14px;background:linear-gradient(145deg,rgba(27,18,44,.98),rgba(10,7,19,.98));color:#f7f2e8;padding:10px 12px;text-align:left;font-size:15px;line-height:1.15;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:4px;box-shadow:inset 0 0 14px rgba(83,47,111,.08)}
+  html.reading-route .tv-spread-options .spread-option span{font-size:11px;color:#aaa0b4;font-weight:600}
+  html.reading-route .tv-spread-options .spread-option.active{border-color:#d8b46a;background:linear-gradient(145deg,rgba(76,48,102,.95),rgba(29,18,48,.98));box-shadow:0 0 0 2px rgba(216,180,106,.16),inset 0 0 18px rgba(216,180,106,.08)}
+  html.reading-route .tv-spread-options .spread-option:focus-visible{outline:3px solid #f0cc78;outline-offset:2px}
+  html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+}
 </style>
 
 <style id="esoteric-tv-full-spreads">
