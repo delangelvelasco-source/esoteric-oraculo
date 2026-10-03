@@ -33,7 +33,7 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
 </head>
 <body>
 <main class="wrap">
-  <div class="top"><div class="brand">ESOTERIC</div><a class="back" href="index.html">← Volver al Oráculo</a></div>
+  <div class="top"><div class="brand">ESOTERIC</div><a class="back" href="https://esoteric.com.mx/">← Volver al Oráculo</a></div>
   <section class="panel">
     <div class="label">CITAS</div>
     <div class="head">
@@ -80,14 +80,22 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
           const token=localStorage.getItem('esoteric_auth_token')||'';
           const headers={'Content-Type':'application/json','Accept':'application/json'};
           if(token)headers.Authorization='Bearer '+token;
-          const r=await fetch(API+'/appointments',{method:'POST',headers,body:JSON.stringify({date:dateEl.value,time,client_name:name,client_phone:phone,service:'Lectura de Tarot',duration_minutes:15})});
-          const data=await r.json().catch(()=>({}));
-          if(!r.ok)throw new Error(data.error||'No se pudo reservar el horario.');
-          const a=data.appointment;
-          const msg='🔮 ESOTERIC — Solicitud de cita\nFolio: '+a.folio+'\nFecha: '+fmtDate(d)+'\nHora: '+time+'\nDuración: 15 minutos\nNombre: '+name+'\n\nQuiero confirmar mi cita.';
-          window.open('https://wa.me/'+wa+'?text='+encodeURIComponent(msg),'_blank','noopener');
-          b.textContent=time;b.disabled=true;
-        }catch(e){alert('⚠️ '+e.message);b.disabled=false;b.textContent=time}
+          const payload={date:dateEl.value,time,client_name:name,client_phone:phone,service:'Lectura de Tarot',duration_minutes:15};
+          try{
+            const r=await fetch(API+'/appointments',{method:'POST',headers,body:JSON.stringify(payload)});
+            const data=await r.json().catch(()=>({}));
+            if(!r.ok)throw new Error(data.error||'No se pudo registrar la cita.');
+            const folio=data.appointment?.folio||('ES-'+dateEl.value.replaceAll('-','')+'-'+time.replace(':',''));
+            const msg='🔮 ESOTERIC — Solicitud de cita\nFolio: '+folio+'\nFecha: '+fmtDate(d)+'\nHora: '+time+'\nDuración: 15 minutos\nNombre: '+name+'\nWhatsApp: '+phone+'\n\nQuiero confirmar mi cita.';
+            window.location.href='https://wa.me/'+wa+'?text='+encodeURIComponent(msg);
+            b.textContent='✓ '+time;b.disabled=true;
+          }catch(apiError){
+            // Si el servicio de citas no responde, WhatsApp sigue funcionando como respaldo.
+            const folio='ES-'+dateEl.value.replaceAll('-','')+'-'+time.replace(':','');
+            const msg='🔮 ESOTERIC — Solicitud de cita\nFolio: '+folio+'\nFecha: '+fmtDate(d)+'\nHora: '+time+'\nDuración: 15 minutos\nNombre: '+name+'\nWhatsApp: '+phone+'\n\nQuiero confirmar mi cita.\n\nNota: solicitud enviada por respaldo de WhatsApp.';
+            window.location.href='https://wa.me/'+wa+'?text='+encodeURIComponent(msg);
+            b.textContent='✓ '+time;b.disabled=true;
+          }
       });
       slotsEl.appendChild(b);
     });
