@@ -1334,6 +1334,7 @@ async function loadShareCard(url){
       if(index>=sources.length){resolve(null);return}
       const im=new Image();
       im.crossOrigin='anonymous';
+      im.referrerPolicy='no-referrer';
       let done=false;
       const finish=value=>{
         if(done)return;
@@ -1341,7 +1342,7 @@ async function loadShareCard(url){
         clearTimeout(timer);
         value?resolve(value):(index++,tryNext());
       };
-      const timer=setTimeout(()=>finish(null),9000);
+      const timer=setTimeout(()=>finish(null),12000);
       im.onload=()=>finish(im);
       im.onerror=()=>finish(null);
       im.src=sources[index]+(sources[index].includes('?')?'&':'?')+'_esoteric='+Date.now();
