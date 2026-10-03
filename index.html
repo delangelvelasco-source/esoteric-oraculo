@@ -521,6 +521,17 @@ html.reading-route body .oracle-layout #result{grid-column:2;grid-row:2;min-widt
   html.reading-route body .oracle-layout .reading-panel,html.reading-route body .oracle-layout #result{padding:12px!important;border-radius:16px}
 }
 </style>
+
+<style id="esoteric-tv-spread-picker">
+html.reading-route .tv-spread-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:12px}
+html.reading-route .tv-spread-options .spread-option{min-height:58px;border:1px solid rgba(118,83,153,.7);border-radius:14px;background:linear-gradient(145deg,rgba(27,18,44,.98),rgba(10,7,19,.98));color:#f7f2e8;padding:10px 12px;text-align:left;font-size:15px;line-height:1.15;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:4px;box-shadow:inset 0 0 14px rgba(83,47,111,.08)}
+html.reading-route .tv-spread-options .spread-option span{font-size:11px;color:#aaa0b4;font-weight:600}
+html.reading-route .tv-spread-options .spread-option.active{border-color:#d8b46a;background:linear-gradient(145deg,rgba(76,48,102,.95),rgba(29,18,48,.98));box-shadow:0 0 0 2px rgba(216,180,106,.16),inset 0 0 18px rgba(216,180,106,.08)}
+html.reading-route .tv-spread-options .spread-option:focus-visible{outline:3px solid #f0cc78;outline-offset:2px}
+html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none}
+@media (max-width:520px) and (orientation:landscape){html.reading-route .tv-spread-options{gap:6px}.tv-spread-options .spread-option{min-height:48px!important;font-size:12px!important;padding:7px 9px!important}}
+@media (orientation:portrait){html.reading-route .tv-spread-options{grid-template-columns:1fr}.tv-spread-options .spread-option{min-height:52px}}
+</style>
 </head>
 <body>
 <header>
@@ -595,6 +606,15 @@ html.reading-route body .oracle-layout #result{grid-column:2;grid-row:2;min-widt
           <option value="10">✦ Cruz Celta · 10 cartas</option>
           <option value="12">✦ Panorama · 12 cartas</option>
         </select>
+        <div class="tv-spread-options" role="group" aria-label="Selecciona tu tirada">
+          <button type="button" class="spread-option active" data-spread="3">3 cartas<span>Pregunta concreta</span></button>
+          <button type="button" class="spread-option" data-spread="1">🌙 1 carta<span>Carta del Día</span></button>
+          <button type="button" class="spread-option" data-spread="5">✦ 5 cartas<span>Cruz Simple</span></button>
+          <button type="button" class="spread-option" data-spread="2">✦ 2 cartas<span>Cuerpo y Mente</span></button>
+          <button type="button" class="spread-option" data-spread="9">✦ 9 cartas<span>Tirada de 9</span></button>
+          <button type="button" class="spread-option" data-spread="10">✦ 10 cartas<span>Cruz Celta</span></button>
+          <button type="button" class="spread-option" data-spread="12">✦ 12 cartas<span>Panorama</span></button>
+        </div>
         <div class="spread-description" id="spreadDescription">Una carta para una reflexión breve del momento.</div>
         <div class="actions"><button id="draw">Revelar mi lectura</button></div>
         <div class="steps" aria-label="Proceso de consulta">
@@ -1245,6 +1265,21 @@ document.getElementById('share').addEventListener('click',async()=>{if(!last.len
     });
   }
 })();
+</script>
+
+<script id="esoteric-tv-spread-js">
+document.addEventListener('DOMContentLoaded',function(){
+  const select=document.getElementById('spread');
+  const options=[...document.querySelectorAll('.tv-spread-options .spread-option')];
+  if(!select||!options.length)return;
+  function syncSpread(value){
+    select.value=String(value);
+    options.forEach(btn=>btn.classList.toggle('active',btn.dataset.spread===String(value)));
+    if(typeof updateSpreadDescription==='function') updateSpreadDescription();
+  }
+  options.forEach(btn=>btn.addEventListener('click',function(){syncSpread(this.dataset.spread);}));
+  syncSpread(select.value);
+});
 </script>
 </body>
 </body>
