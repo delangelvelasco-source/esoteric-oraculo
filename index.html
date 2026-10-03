@@ -402,7 +402,7 @@ body.reading-mode .oracle-layout.oracle-hidden{display:block!important}
 body.reading-mode .app-nav{position:sticky;top:0;z-index:20;margin-bottom:14px}
 @media(max-width:700px){.reading-back{width:100%;max-width:360px}}
 </style>
-<script>(function(){if(new URLSearchParams(location.search).get('modo')==='lectura'){document.documentElement.classList.add('reading-route');document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('reading-mode');var o=document.getElementById('oraculo');if(o)o.classList.remove('oracle-hidden');});}})();</script>
+<script>(function(){if(new URLSearchParams(location.search).get('modo')==='lectura'){document.documentElement.classList.add('reading-route');document.addEventListener('DOMContentLoaded',function(){document.body.classList.add('reading-mode');var o=document.getElementById('oraculo');if(o)o.classList.remove('oracle-hidden');document.querySelectorAll('.app-nav a,.reading-back').forEach(function(a){a.target='_top';});});}})();</script>
 </head>
 <body>
 <header>
@@ -457,7 +457,7 @@ body.reading-mode .app-nav{position:sticky;top:0;z-index:20;margin-bottom:14px}
   </section>
 
   <section class="oracle-layout oracle-hidden" id="oraculo">
-    <a class="reading-back" href="index.html" aria-label="Regresar a la portada">← Regresar a ESOTERIC</a>
+    <a class="reading-back" href="index.html" target="_top" aria-label="Regresar a la portada">← Regresar a ESOTERIC</a>
     <div class="panel reading-panel">
       <div class="section-label">01 · TU LECTURA</div>
       <h2>Haz tu pregunta al Tarot</h2>
