@@ -532,6 +532,28 @@ html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;o
 @media (max-width:520px) and (orientation:landscape){html.reading-route .tv-spread-options{gap:6px}.tv-spread-options .spread-option{min-height:48px!important;font-size:12px!important;padding:7px 9px!important}}
 @media (orientation:portrait){html.reading-route .tv-spread-options{grid-template-columns:1fr}.tv-spread-options .spread-option{min-height:52px}}
 </style>
+
+<style id="esoteric-tv-full-spreads">
+/* TV 16:9 · tiradas de 9 y 12 completas en pantalla */
+@media (min-width:1200px) and (orientation:landscape){
+  html.reading-route body .oracle-layout #result{overflow:hidden;padding:14px!important}
+  html.reading-route body .oracle-layout #result .result-head{margin-bottom:4px}
+  html.reading-route body .oracle-layout #result .nine{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:5px;padding:2px;max-width:none;width:100%;align-content:start}
+  html.reading-route body .oracle-layout #result .nine .nslot{min-width:0;padding:3px 2px 4px;border-radius:10px}
+  html.reading-route body .oracle-layout #result .nine .nslot .pos{font-size:7px;line-height:1.05;min-height:13px;margin-bottom:2px}
+  html.reading-route body .oracle-layout #result .nine .nslot .card{width:clamp(78px,7.4vw,112px);max-width:112px}
+  html.reading-route body .oracle-layout #result .nine .nslot .orientation{font-size:6px;margin-top:1px}
+  html.reading-route body .oracle-layout #result .nine .nslot .name{font-size:7px;line-height:1.05;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html.reading-route body .oracle-layout #result .future-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:5px;padding:2px;max-width:none;width:100%;align-content:start}
+  html.reading-route body .oracle-layout #result .future-grid .slot{min-width:0;padding:3px 2px 4px;border-radius:10px}
+  html.reading-route body .oracle-layout #result .future-grid .slot .pos{font-size:7px;line-height:1.05;min-height:13px;margin-bottom:2px}
+  html.reading-route body .oracle-layout #result .future-grid .slot .card{width:clamp(68px,6.2vw,98px);max-width:98px}
+  html.reading-route body .oracle-layout #result .future-grid .slot .orientation{font-size:6px;margin-top:1px}
+  html.reading-route body .oracle-layout #result .future-grid .slot .name{font-size:6.5px;line-height:1.05;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  html.reading-route body .oracle-layout #result .nine .card,
+  html.reading-route body .oracle-layout #result .future-grid .card{box-shadow:0 4px 12px rgba(0,0,0,.35)}
+}
+</style>
 </head>
 <body>
 <header>
