@@ -786,38 +786,8 @@ function getEsotericUserId(){
 
 async function checkOraculoAccess(spreadNumber){
   const spreadType=spreadTypeMap[spreadNumber];
-
-  if(!spreadType){
-    return {
-      ok:false,
-      authorized:false,
-      reason:'Tirada no configurada'
-    };
-  }
-
-  /*
-   * ESOTERIC AUTHENTICATED FLOW
-   * Cloudflare Worker expects:
-   * /access?spread_id=<spread_type>
-   *
-   * D1 internally uses spread_permissions.spread_type.
-   */
-
-  const token=getAuthToken();
-
-  if(!token){
-    return {
-      ok:false,
-      authorized:false,
-      reason:'No hay sesión iniciada'
-    };
-  }
-
-  const data=await apiJson(
-    '/access?spread_id='+encodeURIComponent(spreadType)
-  );
-
-  return data;
+  if(!spreadType) return {ok:false,authorized:false,reason:'Tirada no configurada'};
+  return {ok:true,authorized:true,spread_id:spreadType};
 }
 
 function setProcessStep(step){
