@@ -579,6 +579,13 @@ html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;o
   html.reading-route body .oracle-layout #result .celtic .side .cslot .card{width:clamp(55px,5.2vw,78px);max-width:78px}
 }
 </style>
+
+<style id="esoteric-tv-celtic-button">
+@media (min-width:1200px) and (orientation:landscape){
+  html.reading-route .tv-spread-options .spread-option[data-spread="10"]{border-color:rgba(216,180,106,.78);background:linear-gradient(145deg,rgba(63,41,83,.98),rgba(24,15,39,.98));font-weight:900;letter-spacing:.01em}
+  html.reading-route .tv-spread-options .spread-option[data-spread="10"] span{color:#d8b46a;font-size:12px}
+}
+</style>
 </head>
 <body>
 <header>
@@ -659,7 +666,7 @@ html.reading-route #spread{position:absolute;left:-9999px;width:1px;height:1px;o
           <button type="button" class="spread-option" data-spread="5">✦ 5 cartas<span>Cruz Simple</span></button>
           <button type="button" class="spread-option" data-spread="2">✦ 2 cartas<span>Cuerpo y Mente</span></button>
           <button type="button" class="spread-option" data-spread="9">✦ 9 cartas<span>Tirada de 9</span></button>
-          <button type="button" class="spread-option" data-spread="10">✦ 10 cartas<span>Cruz Celta</span></button>
+          <button type="button" class="spread-option" data-spread="10">✦ 10 cartas · Cruz Celta<span>Lectura completa</span></button>
           <button type="button" class="spread-option" data-spread="12">✦ 12 cartas<span>Panorama</span></button>
         </div>
         <div class="spread-description" id="spreadDescription">Una carta para una reflexión breve del momento.</div>
