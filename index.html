@@ -611,6 +611,188 @@ html.reading-route .reading-visit-counter{display:none}
   html.reading-route body .oracle-layout #result .simple-cross .simple-bottom{grid-column:2;grid-row:3}
 }
 </style>
+<style id="esoteric-mobile-celtic-redesign">
+/* Móvil · Cruz Celta: composición limpia y legible */
+@media (max-width:700px){
+  html.reading-route body .oracle-layout #result .celtic-wrap{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    padding:8px 2px 18px;
+    overflow:hidden;
+  }
+  html.reading-route body .oracle-layout #result .celtic{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:minmax(72px,1fr) minmax(120px,1.45fr) minmax(72px,1fr);
+    grid-template-rows:140px 185px 140px auto;
+    gap:8px 4px;
+    align-items:center;
+    justify-items:center;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cslot{
+    width:100%;
+    min-width:0;
+    text-align:center;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cslot .pos{
+    font-size:8px;
+    line-height:1.05;
+    min-height:18px;
+    margin-bottom:3px;
+    white-space:normal;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cslot .name{
+    font-size:8px;
+    line-height:1.05;
+    margin-top:2px;
+    max-width:100%;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cslot .orientation{
+    font-size:6px;
+    margin-top:1px;
+  }
+
+  html.reading-route body .oracle-layout #result .celtic .p5{grid-column:2;grid-row:1}
+  html.reading-route body .oracle-layout #result .celtic .p3{grid-column:1;grid-row:2}
+  html.reading-route body .oracle-layout #result .celtic .p4{grid-column:3;grid-row:2}
+  html.reading-route body .oracle-layout #result .celtic .p6{grid-column:2;grid-row:3}
+
+  html.reading-route body .oracle-layout #result .celtic .p3 .card,
+  html.reading-route body .oracle-layout #result .celtic .p4 .card,
+  html.reading-route body .oracle-layout #result .celtic .p5 .card,
+  html.reading-route body .oracle-layout #result .celtic .p6 .card{
+    width:82px;
+    max-width:82px;
+  }
+
+  html.reading-route body .oracle-layout #result .celtic .cross{
+    grid-column:2;
+    grid-row:2;
+    width:150px;
+    height:185px;
+    position:relative;
+    display:block;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot{
+    position:absolute;
+    left:50%;
+    width:118px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child{
+    top:50%;
+    transform:translate(-50%,-50%);
+    z-index:2;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child .card{
+    width:90px;
+    max-width:90px;
+    box-shadow:0 0 0 2px var(--gold),0 8px 18px rgba(0,0,0,.45);
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child .pos{
+    display:none;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child .name{
+    font-size:8px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2){
+    top:50%;
+    height:105px;
+    transform:translate(-50%,-50%);
+    z-index:3;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2) .pos{
+    position:absolute;
+    top:-22px;
+    left:0;
+    right:0;
+    min-height:0;
+    margin:0;
+    font-size:7px;
+    white-space:nowrap;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2) .card{
+    width:76px;
+    max-width:76px;
+    margin:0 auto;
+    transform:rotate(90deg);
+    box-shadow:0 0 0 2px var(--gold),0 8px 18px rgba(0,0,0,.45);
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2) .name{
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:-44px;
+    font-size:7.5px;
+  }
+
+  /* Bastón: debajo del cruce en 2 × 2 para que las etiquetas no se aplasten */
+  html.reading-route body .oracle-layout #result .celtic .side{
+    grid-column:1 / -1;
+    grid-row:4;
+    width:100%;
+    height:auto;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    grid-template-rows:repeat(2,auto);
+    gap:10px 6px;
+    align-items:center;
+    justify-items:center;
+    padding-top:4px;
+    border-top:1px solid rgba(216,180,106,.16);
+  }
+  html.reading-route body .oracle-layout #result .celtic .side .cslot{
+    width:100%;
+    height:auto;
+  }
+  html.reading-route body .oracle-layout #result .celtic .side .cslot .card{
+    width:72px;
+    max-width:72px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .side .cslot .pos{
+    font-size:7.5px;
+    min-height:16px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .side .cslot .name{
+    font-size:8px;
+  }
+}
+@media (max-width:430px){
+  html.reading-route body .oracle-layout #result .celtic{
+    grid-template-columns:minmax(66px,1fr) minmax(112px,1.45fr) minmax(66px,1fr);
+    grid-template-rows:128px 172px 128px auto;
+    gap:7px 2px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .p3 .card,
+  html.reading-route body .oracle-layout #result .celtic .p4 .card,
+  html.reading-route body .oracle-layout #result .celtic .p5 .card,
+  html.reading-route body .oracle-layout #result .celtic .p6 .card{
+    width:76px;
+    max-width:76px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross{
+    width:140px;
+    height:172px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:first-child .card{
+    width:84px;
+    max-width:84px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .cross .cslot:nth-child(2) .card{
+    width:70px;
+    max-width:70px;
+  }
+  html.reading-route body .oracle-layout #result .celtic .side .cslot .card{
+    width:68px;
+    max-width:68px;
+  }
+}
+</style>
 </head>
 <body>
 <header>
