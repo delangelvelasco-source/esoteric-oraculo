@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Horóscopos del día | ESOTERIC</title>
+<meta name="description" content="Horóscopo diario de los 12 signos zodiacales en ESOTERIC.">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#090611;color:#f5f0e8;font-family:system-ui,-apple-system,sans-serif}main{width:min(1100px,92%);margin:auto;padding:28px 0 50px}header{text-align:center;padding:20px 0 10px}h1{font-family:Georgia,serif;color:#e3c47c;font-size:clamp(30px,6vw,52px);margin:8px 0}.date{color:#a99fb7}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin-top:28px}.card{background:linear-gradient(145deg,#1b1028,#100a18);border:1px solid rgba(216,180,106,.3);border-radius:18px;padding:20px;box-shadow:0 10px 28px #0008}.sign{font-size:28px;color:#e3c47c}.name{font:700 22px Georgia,serif;margin:8px 0;color:#fff}.message{line-height:1.6;color:#ddd5e2;min-height:105px}.cta{display:block;text-align:center;margin-top:16px;padding:11px;border-radius:12px;background:#d8b46a;color:#120d18;text-decoration:none;font-weight:800}.back{display:inline-block;color:#e3c47c;text-decoration:none;margin-bottom:12px}
+</style>
+</head>
+<body>
+<main>
+<header><a class="back" href="index.html">← Volver a ESOTERIC</a><h1>Horóscopos del día</h1><div class="date" id="date"></div></header>
+<section class="grid" id="grid"></section>
+</main>
+<script>
+const signs=[
+["♈","Aries","Hoy conviene actuar con decisión, pero sin apresurarte. Enfoca tu energía en una sola prioridad y evita discutir por cosas pequeñas."],
+["♉","Tauro","Un asunto que parecía detenido puede avanzar si das un paso concreto. Cuida tus recursos y no tomes decisiones solo por presión."],
+["♊","Géminis","Una conversación puede aclarar algo que llevas tiempo pensando. Pregunta antes de asumir y aprovecha una oportunidad de comunicarte."],
+["♋","Cáncer","Hoy necesitas poner límites sin sentir culpa. Protege tu tiempo y dedica atención a aquello que realmente te da tranquilidad."],
+["♌","Leo","Hay espacio para destacar, pero será más efectivo si dejas que tus acciones hablen. Una decisión práctica puede abrirte una nueva posibilidad."],
+["♍","Virgo","Ordenar una pendiente te dará más claridad de la que esperas. No busques perfección: termina primero lo importante."],
+["♎","Libra","Una elección que has postergado pide equilibrio entre lo que quieres y lo que necesitas. Escucha tu intuición, pero revisa los hechos."],
+["♏","Escorpio","Algo puede revelarse con más claridad si observas antes de reaccionar. Evita compartir información importante con personas que no han ganado tu confianza."],
+["♐","Sagitario","Un cambio de planes puede terminar beneficiándote. Mantén la mente abierta y aprovecha el día para explorar una alternativa."],
+["♑","Capricornio","La constancia tiene ventaja hoy. Avanza en silencio sobre una meta concreta y no permitas que una distracción cambie tu rumbo."],
+["♒","Acuario","Una idea diferente puede resolver un problema conocido. Escucha opiniones externas, pero conserva tu criterio al tomar la decisión final."],
+["♓","Piscis","Tu sensibilidad puede ayudarte a detectar lo que otros pasan por alto. Usa esa percepción para elegir con calma y cuidar tu energía."]
+];
+document.getElementById("date").textContent=new Intl.DateTimeFormat("es-MX",{dateStyle:"full"}).format(new Date());
+document.getElementById("grid").innerHTML=signs.map(s=>`<article class="card"><div class="sign">${s[0]}</div><div class="name">${s[1]}</div><div class="message">${s[2]}</div><a class="cta" href="lectura.html">Hazle una pregunta al oráculo →</a></article>`).join("");
+</script>
+</body>
+</html>
