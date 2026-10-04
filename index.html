@@ -893,7 +893,7 @@ html.reading-route .reading-visit-counter{display:none}
   <a class="hero-start" href="lectura.html">Empezar mi lectura</a>
   <div class="hero-live-actions" aria-label="Opciones de atención">
     <a class="hero-live-btn" href="https://esoteric.com.mx/citas.html">🔮 Lectura de Tarot en Vivo</a>
-    <a class="hero-buy-btn" href="https://wa.me/528123859824?text=Hola%20ESOTERIC%20%F0%9F%94%AE%20Quiero%20comprar%20una%20lectura%20de%20Tarot." target="_blank" rel="noopener">🛒 Comprar</a>
+    <a class="hero-buy-btn" href="https://wa.me/528123859824?text=Hola%20ESOTERIC%20%F0%9F%94%AE%20Quiero%20comprar%20una%20lectura%20de%20Tarot." onclick="return gtag_report_conversion(this.href)">🛒 Comprar</a>
   </div>
 </header>
 
@@ -1709,6 +1709,23 @@ const closeBtn=document.getElementById('close');closeBtn.addEventListener('click
     });
   }
 })();
+</script>
+
+<script id="google-ads-whatsapp-conversion">
+function gtag_report_conversion(url) {
+  var callback = function () {
+    if (typeof url !== 'undefined') {
+      window.location = url;
+    }
+  };
+  gtag('event', 'conversion', {
+    'send_to': 'AW-18492357168/QnxQCP35ipAdELD06_FE',
+    'value': 1.0,
+    'currency': 'MXN',
+    'event_callback': callback
+  });
+  return false;
+}
 </script>
 
 <script id="esoteric-tv-spread-js">
