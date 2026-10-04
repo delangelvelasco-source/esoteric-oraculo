@@ -36,20 +36,14 @@ a{color:inherit}.wrap{width:min(100%,1100px);margin:auto;padding:18px 14px 50px}
   </section>
 
   <section class="section">
-    <h2>Proyecto destacado #1 · Diseño de páginas web</h2>
-    <p>Esta publicidad presenta nuestro servicio de creación de páginas web: diseñamos sitios modernos, personalizados y adaptados a cada negocio o proyecto.</p>
+    <h2>Una idea, hecha realidad</h2>
+    <p>Una muestra visual de un proyecto digital pensado para convertir una idea en una presencia web atractiva y profesional.</p>
     <div class="project">
       <div class="project-info">
-        <span class="tag">Publicidad #1</span>
-        <h3>Tu idea, hecha realidad</h3>
-        <p>Una muestra de nuestro trabajo para ayudarte a tener una página web profesional que represente tu negocio, servicio o marca.</p>
-        <ul><li>Diseño personalizado según tu idea.</li><li>Adaptado a celular, tablet y computadora.</li><li>Ideal para negocios, servicios y proyectos.</li></ul>
-        <div class="controls">
-          <label class="upload">🖼️ Colocar imagen
-            <input id="projectImage" type="file" accept="image/*">
-          </label>
-          <span class="save-note">La imagen se guarda en este navegador para poder revisarla después.</span>
-        </div>
+        <span class="tag">PUBLICACIÓN DESTACADA</span>
+        <h3>Diseño web que conecta</h3>
+        <p>Un concepto creado para mostrar cómo una página web puede presentar una idea, un negocio o una marca de forma moderna y atractiva.</p>
+        <ul><li>Diseño moderno y personalizado.</li><li>Adaptado a celular y computadora.</li><li>Una propuesta pensada para destacar.</li></ul>
       </div>
       <div class="media" id="media">
         <div class="placeholder"><div class="icon">🖼️</div><strong>Diseño web</strong><span>Una página creada para presentar tu proyecto al mundo.</span></div>
@@ -69,16 +63,7 @@ a{color:inherit}.wrap{width:min(100%,1100px);margin:auto;padding:18px 14px 50px}
   </section>
 </div>
 <script>
-const input=document.getElementById('projectImage'),preview=document.getElementById('preview'),media=document.getElementById('media');
-const key='esoteric_publicidad_proyecto_1';
-function show(src){preview.src=src;media.classList.add('has-image')}
-try{const saved=localStorage.getItem(key);if(saved)show(saved)}catch(e){}
-input.addEventListener('change',()=>{
- const file=input.files&&input.files[0]; if(!file)return;
- const reader=new FileReader();
- reader.onload=()=>{try{localStorage.setItem(key,reader.result)}catch(e){} show(reader.result)};
- reader.readAsDataURL(file);
-});
+const preview=document.getElementById('preview'),media=document.getElementById('media');
 </script>
 </body>
 </html>
