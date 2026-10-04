@@ -23,9 +23,9 @@ a{color:inherit}.wrap{width:min(100%,1100px);margin:auto;padding:18px 14px 50px}
 .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.slot{min-height:170px;border:1px dashed rgba(216,180,106,.28);border-radius:16px;display:flex;align-items:center;justify-content:center;text-align:center;padding:15px;background:rgba(8,5,16,.25);color:#8e829d;font-size:11px}.slot img{width:100%;height:100%;object-fit:cover;border-radius:13px}
 @media(max-width:760px){.project{grid-template-columns:1fr}.media{min-height:260px}.gallery{grid-template-columns:1fr 1fr}}
 @media(max-width:430px){.wrap{padding:12px 10px 36px}.top{margin-bottom:12px}.brand{font-size:18px}.back{font-size:11px}.hero{padding:21px 14px 18px}.section{padding:14px}.project-info{padding:16px}.gallery{grid-template-columns:1fr}.media{min-height:220px}}
-</style>
+.media img{filter:url(#sharpen);image-rendering:auto;transform:translateZ(0);}\n</style>
 </head>
-<body>
+<body>\n<svg aria-hidden="true" width="0" height="0" style="position:absolute"><defs><filter id="sharpen" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feConvolveMatrix in="SourceGraphic" order="3" kernelMatrix="0 -1 0 -1 5 -1 0 -1 0" edgeMode="duplicate"/></filter></defs></svg>
 <div class="wrap">
   <div class="top"><div class="brand">ESOTERIC</div><a class="back" href="index.html">← Volver</a></div>
 
