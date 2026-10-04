@@ -29,8 +29,11 @@ const signs=[
 ["♒","Acuario","Una idea diferente puede resolver un problema conocido. Escucha opiniones externas, pero conserva tu criterio al tomar la decisión final."],
 ["♓","Piscis","Tu sensibilidad puede ayudarte a detectar lo que otros pasan por alto. Usa esa percepción para elegir con calma y cuidar tu energía."]
 ];
+const API="https://esoteric-citas.delangel-velasco.workers.dev";
 document.getElementById("date").textContent=new Intl.DateTimeFormat("es-MX",{dateStyle:"full"}).format(new Date());
-document.getElementById("grid").innerHTML=signs.map(s=>`<article class="card"><div class="sign">${s[0]}</div><div class="name">${s[1]}</div><div class="message">${s[2]}</div><a class="cta" href="lectura.html">Hazle una pregunta al oráculo →</a></article>`).join("");
+function render(data){const list=data.horoscopos||[];const by=new Map(list.map(x=>[x.signo,x.mensaje]));document.getElementById("grid").innerHTML=signs.map(s=>`<article class="card"><div class="sign">${s[0]}</div><div class="name">${s[1]}</div><div class="message">${by.get(s[1])||s[2]}</div><a class="cta" href="lectura.html">Hazle una pregunta al oráculo →</a></article>`).join("");}
+async function loadHoroscopos(){try{let r=await fetch(API+"/horoscopos",{cache:"no-store"});let data=r.ok?await r.json():null;if(!data||data.horoscopos.length!==12){await fetch(API+"/horoscopos/generate",{method:"POST"});r=await fetch(API+"/horoscopos",{cache:"no-store"});data=r.ok?await r.json():null;}render(data||{horoscopos:[]});}catch(e){console.error("Horóscopos:",e);render({horoscopos:[]});}}
+loadHoroscopos();
 </script>
 </body>
 </html>
