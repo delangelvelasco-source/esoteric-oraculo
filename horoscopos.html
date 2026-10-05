@@ -16,23 +16,12 @@
 </main>
 <script>
 const signs=[
-["♈","Aries","Hoy conviene actuar con decisión, pero sin apresurarte. Enfoca tu energía en una sola prioridad y evita discutir por cosas pequeñas."],
-["♉","Tauro","Un asunto que parecía detenido puede avanzar si das un paso concreto. Cuida tus recursos y no tomes decisiones solo por presión."],
-["♊","Géminis","Una conversación puede aclarar algo que llevas tiempo pensando. Pregunta antes de asumir y aprovecha una oportunidad de comunicarte."],
-["♋","Cáncer","Hoy necesitas poner límites sin sentir culpa. Protege tu tiempo y dedica atención a aquello que realmente te da tranquilidad."],
-["♌","Leo","Hay espacio para destacar, pero será más efectivo si dejas que tus acciones hablen. Una decisión práctica puede abrirte una nueva posibilidad."],
-["♍","Virgo","Ordenar una pendiente te dará más claridad de la que esperas. No busques perfección: termina primero lo importante."],
-["♎","Libra","Una elección que has postergado pide equilibrio entre lo que quieres y lo que necesitas. Escucha tu intuición, pero revisa los hechos."],
-["♏","Escorpio","Algo puede revelarse con más claridad si observas antes de reaccionar. Evita compartir información importante con personas que no han ganado tu confianza."],
-["♐","Sagitario","Un cambio de planes puede terminar beneficiándote. Mantén la mente abierta y aprovecha el día para explorar una alternativa."],
-["♑","Capricornio","La constancia tiene ventaja hoy. Avanza en silencio sobre una meta concreta y no permitas que una distracción cambie tu rumbo."],
-["♒","Acuario","Una idea diferente puede resolver un problema conocido. Escucha opiniones externas, pero conserva tu criterio al tomar la decisión final."],
-["♓","Piscis","Tu sensibilidad puede ayudarte a detectar lo que otros pasan por alto. Usa esa percepción para elegir con calma y cuidar tu energía."]
+["♈","Aries"],["♉","Tauro"],["♊","Géminis"],["♋","Cáncer"],["♌","Leo"],["♍","Virgo"],["♎","Libra"],["♏","Escorpio"],["♐","Sagitario"],["♑","Capricornio"],["♒","Acuario"],["♓","Piscis"]
 ];
 const API="https://esoteric-citas.delangel-velasco.workers.dev";
 document.getElementById("date").textContent=new Intl.DateTimeFormat("es-MX",{dateStyle:"full"}).format(new Date());
-function render(data){const list=data.horoscopos||[];const by=new Map(list.map(x=>[x.signo,x.mensaje]));document.getElementById("grid").innerHTML=signs.map(s=>`<article class="card"><div class="sign">${s[0]}</div><div class="name">${s[1]}</div><div class="message">${by.get(s[1])||s[2]}</div><a class="cta" href="lectura.html">Hazle una pregunta al oráculo →</a></article>`).join("");}
-async function loadHoroscopos(){try{let r=await fetch(API+"/horoscopos",{cache:"no-store"});let data=r.ok?await r.json():null;if(!data||data.horoscopos.length!==12){await fetch(API+"/horoscopos/generate",{method:"POST"});r=await fetch(API+"/horoscopos",{cache:"no-store"});data=r.ok?await r.json():null;}render(data||{horoscopos:[]});}catch(e){console.error("Horóscopos:",e);render({horoscopos:[]});}}
+function render(data){const list=data.horoscopos||[];const by=new Map(list.map(x=>[x.signo,x.mensaje]));document.getElementById("grid").innerHTML=signs.map(s=>`<article class="card"><div class="sign">${s[0]}</div><div class="name">${s[1]}</div><div class="message">${by.get(s[1])||"El horóscopo de hoy se está preparando. Actualiza en unos segundos."}</div><a class="cta" href="lectura.html">Hazle una pregunta al oráculo →</a></article>`).join("");}
+async function loadHoroscopos(){try{let r=await fetch(API+"/horoscopos?ts="+Date.now(),{cache:"no-store"});let data=r.ok?await r.json():null;render(data||{horoscopos:[]});}catch(e){console.error("Horóscopos:",e);render({horoscopos:[]});}}
 loadHoroscopos();
 </script>
 </body>
