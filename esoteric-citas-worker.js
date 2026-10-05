@@ -21,14 +21,15 @@ return json({ok:false,error:"Ruta no encontrada",path:url.pathname},404);
 }catch(e){return json({ok:false,error:"Error interno del servidor",detail:String(e?.message||e)},500)}}};
 async function getHoroscopos(db){
  await ensureHoroscoposTable(db);
- const today=new Date().toISOString().slice(0,10);
+ const today=mexicoDate();
  const rows=await db.prepare("SELECT signo,simbolo,mensaje FROM horoscopos WHERE fecha=? ORDER BY id").bind(today).all();
  if((rows.results||[]).length===12)return json({ok:true,fecha:today,horoscopos:rows.results});
+ if(env.OPENAI_API_KEY)return await generateHoroscopos(db,env);
  return json({ok:true,fecha:today,horoscopos:[],generados:false});
 }
 async function generateHoroscopos(db,env){
  await ensureHoroscoposTable(db);
- const today=new Date().toISOString().slice(0,10);
+ const today=mexicoDate();
  const existing=await db.prepare("SELECT COUNT(*) AS n FROM horoscopos WHERE fecha=?").bind(today).first();
  if(Number(existing?.n||0)===12)return json({ok:true,fecha:today,generated:false,horoscopos:await getRows(db,today)});
  const signs=[["Aries","♈"],["Tauro","♉"],["Géminis","♊"],["Cáncer","♋"],["Leo","♌"],["Virgo","♍"],["Libra","♎"],["Escorpio","♏"],["Sagitario","♐"],["Capricornio","♑"],["Acuario","♒"],["Piscis","♓"]];
@@ -41,6 +42,7 @@ async function generateHoroscopos(db,env){
  for(const s of signs){const item=parsed.find(x=>x.signo===s[0]);if(!item||!item.mensaje)continue;await db.prepare("INSERT INTO horoscopos (fecha,signo,simbolo,mensaje,created_at) VALUES (?,?,?,?,datetime('now'))").bind(today,s[0],s[1],String(item.mensaje).trim()).run();}
  return json({ok:true,fecha:today,generated:true,horoscopos:await getRows(db,today)});
 }
+function mexicoDate(){const p=new Intl.DateTimeFormat("en-US",{timeZone:"America/Mexico_City",year:"numeric",month:"2-digit",day:"2-digit"}).formatToParts(new Date());const m=Object.fromEntries(p.filter(x=>x.type!=="literal").map(x=>[x.type,x.value]));return m.year+"-"+m.month+"-"+m.day}
 async function getRows(db,date){const r=await db.prepare("SELECT signo,simbolo,mensaje FROM horoscopos WHERE fecha=? ORDER BY id").bind(date).all();return r.results||[]}
 async function ensureHoroscoposTable(db){await db.prepare("CREATE TABLE IF NOT EXISTS horoscopos (id INTEGER PRIMARY KEY AUTOINCREMENT,fecha TEXT NOT NULL,signo TEXT NOT NULL,simbolo TEXT NOT NULL,mensaje TEXT NOT NULL,created_at TEXT NOT NULL DEFAULT (datetime('now')),UNIQUE(fecha,signo))").run();await db.prepare("CREATE INDEX IF NOT EXISTS idx_horoscopos_fecha ON horoscopos(fecha)").run();}
 async function ensureAppointmentsTable(db){await db.prepare("CREATE TABLE IF NOT EXISTS appointments (id TEXT PRIMARY KEY,folio TEXT NOT NULL UNIQUE,appointment_date TEXT NOT NULL,appointment_time TEXT NOT NULL,client_name TEXT NOT NULL,client_phone TEXT DEFAULT '',service TEXT DEFAULT 'Lectura de Tarot',duration_minutes INTEGER NOT NULL DEFAULT 15,status TEXT NOT NULL DEFAULT 'pending',created_at TEXT NOT NULL DEFAULT (datetime('now')),updated_at TEXT NOT NULL DEFAULT (datetime('now')))").run();await db.prepare("CREATE INDEX IF NOT EXISTS idx_appointments_date_time ON appointments (appointment_date,appointment_time)").run();await db.prepare("CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments (status)").run();}
