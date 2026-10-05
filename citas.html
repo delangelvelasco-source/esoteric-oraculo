@@ -85,23 +85,28 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
     return h*60+m > now.getHours()*60+now.getMinutes();
   }
 
+  let occupiedSlots=new Set();
+
   async function render(){
     slotsEl.innerHTML='';
     if(!dateEl.value){
       dayEl.textContent='Selecciona una fecha';
+      occupiedSlots=new Set();
       return;
     }
 
     const d=new Date(dateEl.value+'T12:00:00');
     dayEl.textContent=fmtDate(d).replace(/^./,x=>x.toUpperCase());
 
-    const occupied=await getOccupied();
+    occupiedSlots=await getOccupied();
+    const occupied=occupiedSlots;
 
     makeSlots().forEach(time=>{
       if(occupied.has(time) || !isFutureSlot(time)) return;
       const b=document.createElement('button');
       b.type='button';
       b.className='slot';
+      b.dataset.time=time;
       b.textContent=time;
 
       b.addEventListener('click',async()=>{
@@ -145,6 +150,12 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
             await render();
             return;
           }
+          // En cuanto el servidor registra la cita, el horario desaparece
+          // inmediatamente de la agenda pública, antes de abrir WhatsApp.
+          occupiedSlots.add(time);
+          const bookedButton=[...slotsEl.querySelectorAll('.slot')].find(x=>x.dataset.time===time);
+          if(bookedButton) bookedButton.remove();
+
           folio=data.appointment?.folio||('ES-'+dateEl.value.replaceAll('-','')+'-'+time.replace(':',''));
         }catch(e){
           alert('No se pudo apartar la cita. Intenta nuevamente.');
