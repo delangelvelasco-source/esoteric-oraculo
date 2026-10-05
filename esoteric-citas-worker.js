@@ -36,7 +36,7 @@ async function generateHoroscopos(db,env){
  const prompt="Genera el horóscopo diario para los 12 signos para la fecha "+today+". Estilo ESOTERIC: directo, lógico, claro y útil; nada de afirmaciones médicas, legales o financieras. Cada mensaje debe ser de 35 a 55 palabras. Devuelve SOLO JSON válido como arreglo de 12 objetos con las claves signo y mensaje, respetando exactamente estos signos: "+signs.map(x=>x[0]).join(", ")+".";
  const resp=await fetch("https://api.openai.com/v1/responses",{method:"POST",headers:{"Authorization":"Bearer "+env.OPENAI_API_KEY,"Content-Type":"application/json"},body:JSON.stringify({model:env.OPENAI_MODEL||"gpt-5-mini",input:prompt})});
  if(!resp.ok)return json({ok:false,error:"No se pudo generar el horóscopo con IA"},502);
- const data=await resp.json(),textOut=String(data.output_text||"").trim();
+ const data=await resp.json(),textOut=String(data.output_text||((data.output||[]).flatMap(o=>o.content||[]).map(x=>x.text||"").filter(Boolean).join("\n"))||"").trim();
  let parsed;try{parsed=JSON.parse(textOut)}catch(e){return json({ok:false,error:"La IA no devolvió JSON válido"},502);}
  await db.prepare("DELETE FROM horoscopos WHERE fecha=?").bind(today).run();
  for(const s of signs){const item=parsed.find(x=>x.signo===s[0]);if(!item||!item.mensaje)continue;await db.prepare("INSERT INTO horoscopos (fecha,signo,simbolo,mensaje,created_at) VALUES (?,?,?,?,datetime('now'))").bind(today,s[0],s[1],String(item.mensaje).trim()).run();}
