@@ -69,7 +69,23 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
     return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
   }
 
-  function render(){
+  async function getOccupied(){
+    try{
+      const r=await fetch(API+'/appointments?date='+encodeURIComponent(dateEl.value),{headers:{Accept:'application/json'}});
+      if(!r.ok)return new Set();
+      const data=await r.json();
+      return new Set(data.occupied||[]);
+    }catch(e){return new Set();}
+  }
+
+  function isFutureSlot(time){
+    const now=new Date();
+    if(dateEl.value!==localISODate(now))return true;
+    const [h,m]=time.split(':').map(Number);
+    return h*60+m > now.getHours()*60+now.getMinutes();
+  }
+
+  async function render(){
     slotsEl.innerHTML='';
     if(!dateEl.value){
       dayEl.textContent='Selecciona una fecha';
@@ -79,7 +95,10 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
     const d=new Date(dateEl.value+'T12:00:00');
     dayEl.textContent=fmtDate(d).replace(/^./,x=>x.toUpperCase());
 
+    const occupied=await getOccupied();
+
     makeSlots().forEach(time=>{
+      if(occupied.has(time) || !isFutureSlot(time)) return;
       const b=document.createElement('button');
       b.type='button';
       b.className='slot';
@@ -108,7 +127,7 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
           duration_minutes:15
         };
 
-        let folio='ES-'+dateEl.value.replaceAll('-','')+'-'+time.replace(':','');
+        let folio='';
 
         try{
           const controller=new AbortController();
@@ -121,9 +140,16 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
           });
           clearTimeout(timer);
           const data=await r.json().catch(()=>({}));
-          if(r.ok && data.appointment?.folio) folio=data.appointment.folio;
+          if(!r.ok){
+            alert(data.error||'Ese horario ya no está disponible.');
+            await render();
+            return;
+          }
+          folio=data.appointment?.folio||('ES-'+dateEl.value.replaceAll('-','')+'-'+time.replace(':',''));
         }catch(e){
-          // WhatsApp queda como respaldo si el servicio de citas no responde.
+          alert('No se pudo apartar la cita. Intenta nuevamente.');
+          await render();
+          return;
         }
 
         const msg='🔮 ESOTERIC — Solicitud de cita\nFolio: '+folio+
@@ -147,6 +173,8 @@ h1{margin:0;font-family:Georgia,serif;font-size:28px;font-weight:500}
   if(!dateEl.value) dateEl.value=localISODate(today);
   dateEl.addEventListener('change',render);
   render();
+  setInterval(render,30000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)render();});
 })();
 </script>
 </body>
