@@ -1224,47 +1224,40 @@ html.reading-route .reading-visit-counter{display:none}
 
 <div class="modal" id="modal"><button id="close" type="button">×</button><img id="modalImg" alt="Carta de tarot ampliada"></div>
 <script>
+const rwsImage=(file)=>"https://commons.wikimedia.org/wiki/Special:FilePath/"+encodeURIComponent(file);
 const majors=[
- ["El Loco","RWS Tarot 00 Fool.jpg"],
- ["El Mago","RWS Tarot 01 Magician.jpg"],
- ["La Sacerdotisa","RWS Tarot 02 High Priestess.jpg"],
- ["La Emperatriz","RWS Tarot 03 Empress.jpg"],
- ["El Emperador","RWS Tarot 04 Emperor.jpg"],
- ["El Hierofante","RWS Tarot 05 Hierophant.jpg"],
- ["Los Enamorados","RWS Tarot 06 Lovers.jpg"],
- ["El Carro","RWS Tarot 07 Chariot.jpg"],
- ["La Fuerza","RWS Tarot 08 Strength.jpg"],
- ["El Ermitaño","RWS Tarot 09 Hermit.jpg"],
- ["La Rueda de la Fortuna","RWS Tarot 10 Wheel of Fortune.jpg"],
- ["La Justicia","RWS Tarot 11 Justice.jpg"],
- ["El Colgado","RWS Tarot 12 Hanged Man.jpg"],
- ["La Muerte","RWS Tarot 13 Death.jpg"],
- ["La Templanza","RWS Tarot 14 Temperance.jpg"],
- ["El Diablo","RWS Tarot 15 Devil.jpg"],
- ["La Torre","RWS Tarot 16 Tower.jpg"],
- ["La Estrella","RWS Tarot 17 Star.jpg"],
- ["La Luna","RWS Tarot 18 Moon.jpg"],
- ["El Sol","RWS Tarot 19 Sun.jpg"],
- ["El Juicio","RWS Tarot 20 Judgement.jpg"],
- ["El Mundo","RWS Tarot 21 World.jpg"]
-].map(([name,file])=>[name,"https://commons.wikimedia.org/wiki/Special:Redirect/file/"+encodeURIComponent(file),"Arcanos Mayores"]);
-const suitData=[
- ["Bastos","Wands"],
- ["Copas","Cups"],
- ["Espadas","Swords"],
- ["Oros","Pents"]
-];
-const rankData=[
- ["As",1],["Dos",2],["Tres",3],["Cuatro",4],["Cinco",5],["Seis",6],["Siete",7],
- ["Ocho",8],["Nueve",9],["Diez",10],["Sota",11],["Caballero",12],["Reina",13],["Rey",14]
-];
+ ["El Loco",""+rwsImage("RWS_Tarot_00_Fool.jpg")","Arcanos Mayores"],
+ ["El Mago",""+rwsImage("RWS_Tarot_01_Magician.jpg")","Arcanos Mayores"],
+ ["La Sacerdotisa",""+rwsImage("RWS_Tarot_02_High_Priestess.jpg")","Arcanos Mayores"],
+ ["La Emperatriz",""+rwsImage("RWS_Tarot_03_Empress.jpg")","Arcanos Mayores"],
+ ["El Emperador",""+rwsImage("RWS_Tarot_04_Emperor.jpg")","Arcanos Mayores"],
+ ["El Hierofante",""+rwsImage("RWS_Tarot_05_Hierophant.jpg")","Arcanos Mayores"],
+ ["Los Enamorados",""+rwsImage("TheLovers.jpg")","Arcanos Mayores"],
+ ["El Carro",""+rwsImage("RWS_Tarot_07_Chariot.jpg")","Arcanos Mayores"],
+ ["La Fuerza",""+rwsImage("RWS_Tarot_08_Strength.jpg")","Arcanos Mayores"],
+ ["El Ermitaño",""+rwsImage("RWS_Tarot_09_Hermit.jpg")","Arcanos Mayores"],
+ ["La Rueda de la Fortuna",""+rwsImage("RWS_Tarot_10_Wheel_of_Fortune.jpg")","Arcanos Mayores"],
+ ["La Justicia",""+rwsImage("RWS_Tarot_11_Justice.jpg")","Arcanos Mayores"],
+ ["El Colgado",""+rwsImage("RWS_Tarot_12_Hanged_Man.jpg")","Arcanos Mayores"],
+ ["La Muerte",""+rwsImage("RWS_Tarot_13_Death.jpg")","Arcanos Mayores"],
+ ["La Templanza",""+rwsImage("RWS_Tarot_14_Temperance.jpg")","Arcanos Mayores"],
+ ["El Diablo",""+rwsImage("RWS_Tarot_15_Devil.jpg")","Arcanos Mayores"],
+ ["La Torre",""+rwsImage("RWS_Tarot_16_Tower.jpg")","Arcanos Mayores"],
+ ["La Estrella",""+rwsImage("RWS_Tarot_17_Star.jpg")","Arcanos Mayores"],
+ ["La Luna",""+rwsImage("RWS_Tarot_18_Moon.jpg")","Arcanos Mayores"],
+ ["El Sol",""+rwsImage("RWS_Tarot_19_Sun.jpg")","Arcanos Mayores"],
+ ["El Juicio",""+rwsImage("RWS_Tarot_20_Judgement.jpg")","Arcanos Mayores"],
+ ["El Mundo",""+rwsImage("RWS_Tarot_21_World.jpg")","Arcanos Mayores"]
+].map(([name,src,suit])=>[name,src,suit]);
 const minors=[];
-suitData.forEach(([es,en])=>{
- rankData.forEach(([r,n])=>{
-   const file=en+String(n).padStart(2,"0")+".jpg";
-   minors.push([r+" de "+es,"https://commons.wikimedia.org/wiki/Special:Redirect/file/"+encodeURIComponent(file),es]);
- });
-});
+const minorFile=(prefix,n)=>prefix==="Wands"&&n===9?"Tarot_Nine_of_Wands.jpg":prefix+String(n).padStart(2,"0")+".jpg";
+["Bastos","Wands"]
+["Copas","Cups"]
+["Espadas","Swords"]
+["Oros","Pents"]
+const suitData=[["Bastos","Wands"],["Copas","Cups"],["Espadas","Swords"],["Oros","Pents"]];
+const rankData=[["As",1],["Dos",2],["Tres",3],["Cuatro",4],["Cinco",5],["Seis",6],["Siete",7],["Ocho",8],["Nueve",9],["Diez",10],["Sota",11],["Caballero",12],["Reina",13],["Rey",14]];
+suitData.forEach(([es,en])=>rankData.forEach(([r,n])=>minors.push([r+" de "+es,rwsImage(minorFile(en,n)),es])));
 const cards=[...majors,...minors];
 const positions={1:['Carta'],2:['Cuerpo','Mente'],3:['Pasado','Presente','Futuro'],5:['Centro','Obstáculo','Base','Consejo','Resultado'],9:['Situación','Influencia','Obstáculo','Pasado','Presente','Futuro','Consejo','Acción','Resultado'],10:['C1 · Situación','C2 · Cómo se manifiesta','C3 · Desencadenantes','C4 · Pasado','C5 · Objetivo principal','C6 · Futuro inmediato','C7 · Tu posición','C8 · Entorno','C9 · Advertencia o consejo','C10 · Resultado final'],12:['1 · Presente','2 · Dinero','3 · Proyectos','4 · Familia','5 · Preocupaciones','6 · Salud','7 · Amor','8 · Cambios','9 · Viajes','10 · Trabajo','11 · Amistad','12 · Consejo final']};
 let last=[];function shuffled(){return[...cards].sort(()=>Math.random()-.5)}function makeCard(c){return{name:c[0],displayName:c[3]==='Mayores'?(c[1]+' — '+c[0]):c[0],src:c[3]==='Mayores'?c[2]:c[1],type:c[3]==='Mayores'?c[3]:c[2],reversed:Math.random()<.5}}function optimizedCardSrc(src,w=420){return 'https://images.weserv.nl/?url='+encodeURIComponent(src)+'&w='+w+'&q=78&output=webp'}function cardHTML(c){const label=c.displayName||c.name;return `<div class="card${c.reversed?' reversed':''}"><img src="${optimizedCardSrc(c.src)}" alt="${label}${c.reversed?' — invertida':' — al derecho'}" loading="eager" fetchpriority="high" decoding="async"></div><div class="orientation">${c.reversed?'↕ INVERTIDA':'↑ AL DERECHO'}</div><div class="name">${label}</div>`}function warmCardImages(selected){selected.forEach(c=>{const im=new Image();im.decoding='async';im.fetchPriority='high';im.src=optimizedCardSrc(c.src)})}function bindCard(s,c){const el=s.querySelector('.card'),im=s.querySelector('img');if(im){im.onload=()=>im.classList.add('loaded');im.onerror=()=>{el.innerHTML='<div class="err">No se pudo cargar esta imagen.</div>'}}if(el)el.onclick=()=>openModal(c.src,c.name,c.reversed)}
