@@ -1778,7 +1778,46 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
-<script>(function(){const el=document.querySelector('.visit-counter .counterapi');if(!el)return;const reveal=()=>{if(el.textContent.trim())el.classList.add('ready')};reveal();new MutationObserver(reveal).observe(el,{childList:true,subtree:true,characterData:true});})();</script><script src="https://counterapi.com/c.js?ns=esoteric-oraculo" async></script>
+<script id="esoteric-visit-counter-jsonp">
+(function(){
+  var el=document.querySelector('.visit-counter .counterapi');
+  if(!el)return;
+  el.textContent='Cargando…';
+  el.setAttribute('aria-live','polite');
+  var finished=false;
+  var timer=setTimeout(function(){
+    if(finished)return;
+    finished=true;
+    el.textContent='No disponible';
+    el.setAttribute('data-counter-error','timeout');
+  },10000);
+  window.esotericCounterCallback=function(response){
+    if(finished)return;
+    finished=true;
+    clearTimeout(timer);
+    var value=Number(response && response.value);
+    if(response && Number.isFinite(value)){
+      el.textContent=new Intl.NumberFormat('es-MX').format(value);
+      el.classList.add('ready');
+      el.removeAttribute('data-counter-error');
+    }else{
+      el.textContent='No disponible';
+      el.setAttribute('data-counter-error','invalid-response');
+    }
+  };
+  var script=document.createElement('script');
+  script.async=true;
+  script.src='https://counterapi.com/api/esoteric-oraculo/view/site-visits?callback=esotericCounterCallback';
+  script.onerror=function(){
+    if(finished)return;
+    finished=true;
+    clearTimeout(timer);
+    el.textContent='No disponible';
+    el.setAttribute('data-counter-error','script-error');
+  };
+  document.head.appendChild(script);
+})();
+</script>
 <script>
 (function(){
   const canvas=document.createElement('canvas');
