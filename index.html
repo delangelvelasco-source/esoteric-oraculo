@@ -1222,7 +1222,7 @@ html.reading-route .reading-visit-counter{display:none}
     <div class="visit-counter" aria-label="Contador de visitas">
       <span class="eye-mark" aria-hidden="true">👁️</span>
       <span>Visitas</span>
-      <div class="counterapi" ns="esoteric-oraculo" action="view" key="site-visits" label="visitas" noLink="true" noCss="true"></div>
+      <span class="counterapi" id="visit-count" aria-live="polite">Cargando…</span>
     </div>
     
   </section>
@@ -1784,8 +1784,48 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
-<!-- Contador oficial CounterAPI: widget con el namespace y la clave originales. -->
-<script src="https://counterapi.com/c.js" async></script>
+<!-- Contador CounterAPI: JSONP compatible con respuestas numéricas o de texto. -->
+<script>
+(function () {
+  var node = document.getElementById('visit-count');
+  if (!node) return;
+  var finished = false;
+  var timeout = setTimeout(function () {
+    if (finished) return;
+    finished = true;
+    node.textContent = 'No disponible';
+    node.setAttribute('title', 'CounterAPI no respondió. Recarga la página para intentarlo de nuevo.');
+  }, 8000);
+
+  window.esotericVisitCounterLoaded = function (data) {
+    if (finished) return;
+    finished = true;
+    clearTimeout(timeout);
+    var value = data && data.value !== undefined ? Number(data.value) : NaN;
+    if (Number.isFinite(value) && value >= 0) {
+      node.textContent = new Intl.NumberFormat('es-MX').format(value);
+      node.classList.add('ready');
+      node.setAttribute('aria-label', 'Visitas totales: ' + value);
+    } else {
+      node.textContent = 'No disponible';
+      node.setAttribute('title', 'CounterAPI respondió sin un total válido.');
+      console.error('[ESOTERIC] Respuesta inesperada de CounterAPI:', data);
+    }
+  };
+
+  var script = document.createElement('script');
+  script.src = 'https://counterapi.com/api/esoteric-oraculo/view/site-visits?callback=esotericVisitCounterLoaded';
+  script.async = true;
+  script.onerror = function () {
+    if (finished) return;
+    finished = true;
+    clearTimeout(timeout);
+    node.textContent = 'No disponible';
+    node.setAttribute('title', 'No se pudo cargar CounterAPI.');
+  };
+  document.head.appendChild(script);
+})();
+</script>
 <script>
 (function(){
   const canvas=document.createElement('canvas');
