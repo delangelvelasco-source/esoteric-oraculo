@@ -1778,7 +1778,41 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
-<script>(function(){const el=document.querySelector('.visit-counter .counterapi');if(!el)return;const reveal=()=>{if(el.textContent.trim())el.classList.add('ready')};reveal();new MutationObserver(reveal).observe(el,{childList:true,subtree:true,characterData:true});})();</script><script src="https://counterapi.com/c.js?ns=esoteric-oraculo" async></script>
+<script id="esoteric-visit-counter-loader">
+(function(){
+  function initVisitCounter(){
+    var el=document.querySelector('.visit-counter .counterapi');
+    if(!el || el.dataset.counterStarted==='true') return;
+    el.dataset.counterStarted='true';
+    el.setAttribute('aria-live','polite');
+    el.textContent='Cargando…';
+    var endpoint='https://counterapi.com/api/esoteric-oraculo/view/site-visits';
+    var controller=typeof AbortController!=='undefined'?new AbortController():null;
+    var timeout=controller?setTimeout(function(){controller.abort();},8000):null;
+    fetch(endpoint,{method:'GET',cache:'no-store',mode:'cors',signal:controller?controller.signal:undefined})
+      .then(function(response){
+        if(!response.ok) throw new Error('HTTP '+response.status);
+        return response.json();
+      })
+      .then(function(data){
+        if(timeout) clearTimeout(timeout);
+        var value=Number(data && (data.value!==undefined?data.value:(data.data && data.data.value)));
+        if(!Number.isFinite(value)) throw new Error('Respuesta de contador no válida');
+        el.textContent=new Intl.NumberFormat('es-MX').format(value);
+        el.classList.add('ready');
+        el.removeAttribute('data-counter-error');
+      })
+      .catch(function(error){
+        if(timeout) clearTimeout(timeout);
+        el.textContent='No disponible';
+        el.setAttribute('data-counter-error','true');
+        console.warn('[ESOTERIC] No se pudo cargar el contador de visitas:',error);
+      });
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',initVisitCounter,{once:true});
+  else initVisitCounter();
+})();
+</script>
 <script>
 (function(){
   const canvas=document.createElement('canvas');
