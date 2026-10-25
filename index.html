@@ -1778,30 +1778,8 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
-<script id="esoteric-first-party-visit-counter">
-(function(){
-  var el=document.querySelector('.visit-counter .counterapi');
-  if(!el)return;
-  var api='https://esoteric-api.delangel-velasco.workers.dev';
-  el.textContent='Registrando…';
-  el.setAttribute('aria-live','polite');
-  var done=false;
-  var timer=setTimeout(function(){if(done)return;done=true;el.textContent='No disponible';el.setAttribute('data-counter-error','timeout');},10000);
-  fetch(api+'/visits/increment',{method:'POST',cache:'no-store'})
-    .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-    .then(function(data){
-      if(done)return;done=true;clearTimeout(timer);
-      if(!data||data.ok!==true||!Number.isFinite(Number(data.total)))throw new Error('Respuesta inválida');
-      el.textContent=new Intl.NumberFormat('es-MX').format(Number(data.total));
-      el.classList.add('ready');el.removeAttribute('data-counter-error');
-    })
-    .catch(function(err){
-      if(done)return;done=true;clearTimeout(timer);
-      el.textContent='No disponible';el.setAttribute('data-counter-error','api-error');
-      console.warn('[ESOTERIC] No se pudo registrar la visita:',err);
-    });
-})();
-</script>
+<!-- Contador de visitas oficial: conserva el namespace y la clave existentes de ESOTERIC. -->
+<script src="https://counterapi.com/c.js" async></script>
 <script>
 (function(){
   const canvas=document.createElement('canvas');
