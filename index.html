@@ -1784,45 +1784,77 @@ document.getElementById('share').addEventListener('click',async()=>{
 });
 const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
-<!-- Contador alternativo independiente de CounterAPI: Abacus API -->
+<!-- Contador de visitas ESOTERIC: incrementa una vez por sesión y solo consulta al recargar -->
 <script>
 (function () {
   var node = document.getElementById('visit-count');
   if (!node) return;
-  var finished = false;
+
+  var base = 'https://abacus.jasoncameron.dev';
+  var namespace = 'esoteric-oraculo';
+  var key = 'site-visits';
+  var sessionKey = 'esoteric_counted_site_visit_v1';
+  var countedThisSession = false;
+
+  try {
+    countedThisSession = window.sessionStorage.getItem(sessionKey) === '1';
+  } catch (e) {
+    // Si el navegador bloquea sessionStorage, el contador seguirá funcionando,
+    // aunque no podrá evitar todos los incrementos durante esa sesión.
+  }
+
   var timeout = setTimeout(function () {
-    if (finished) return;
-    finished = true;
     node.textContent = 'No disponible';
-    node.setAttribute('title', 'El servicio alternativo de visitas no respondió.');
+    node.setAttribute('title', 'No fue posible consultar el contador. Inténtalo de nuevo más tarde.');
   }, 7000);
 
-  fetch('https://abacus.jasoncameron.dev/hit/esoteric-oraculo/site-visits', {
-    method: 'GET',
-    cache: 'no-store',
-    mode: 'cors'
-  })
-  .then(function (response) {
-    if (!response.ok) throw new Error('HTTP ' + response.status);
-    return response.json();
-  })
-  .then(function (data) {
-    if (finished) return;
-    finished = true;
+  function showValue(data) {
     clearTimeout(timeout);
     var value = Number(data && data.value);
     if (!Number.isFinite(value) || value < 0) throw new Error('Respuesta sin total válido');
     node.textContent = new Intl.NumberFormat('es-MX').format(value);
     node.classList.add('ready');
     node.setAttribute('aria-label', 'Visitas registradas: ' + value);
-  })
-  .catch(function (error) {
-    if (finished) return;
-    finished = true;
+  }
+
+  function readTotal() {
+    return fetch(base + '/get/' + namespace + '/' + key, {
+      method: 'GET',
+      cache: 'no-store',
+      mode: 'cors'
+    }).then(function (response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    });
+  }
+
+  var request;
+  if (countedThisSession) {
+    // Una recarga en la misma pestaña/sesión solo lee el total; no lo incrementa.
+    request = readTotal();
+  } else {
+    // La primera carga de esta sesión cuenta una visita.
+    request = fetch(base + '/hit/' + namespace + '/' + key, {
+      method: 'GET',
+      cache: 'no-store',
+      mode: 'cors'
+    }).then(function (response) {
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return response.json();
+    }).then(function (data) {
+      try { window.sessionStorage.setItem(sessionKey, '1'); } catch (e) {}
+      return data;
+    }).catch(function () {
+      // Si falla el incremento, intenta mostrar el total existente sin modificarlo.
+      return readTotal();
+    });
+  }
+
+  request.then(showValue).catch(function (error) {
     clearTimeout(timeout);
     node.textContent = 'No disponible';
-    node.setAttribute('title', 'El contador alternativo no respondió. Recarga la página para volver a intentarlo.');
-    console.error('[ESOTERIC] Falló el contador alternativo:', error);
+    node.setAttribute('title', 'No fue posible consultar el contador. Inténtalo de nuevo más tarde.');
+    console.error('[ESOTERIC] Falló el contador de visitas:', error);
   });
 })();
 </script>
