@@ -1216,7 +1216,7 @@ html.reading-route .reading-visit-counter{display:none}
     <div class="visit-counter" aria-label="Contador de visitas">
       <span class="eye-mark" aria-hidden="true">👁️</span>
       <span>Visitas</span>
-      <div class="counterapi" ns="esoteric-oraculo" action="view" key="site-visits" label="visitas" noLink="true" noCss="true"></div>
+      <span class="counterapi" id="visit-count" aria-live="polite">…</span>
     </div>
     
   </section>
@@ -1779,7 +1779,32 @@ document.getElementById('share').addEventListener('click',async()=>{
 const closeBtn=document.getElementById('close');closeBtn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();closeModal()});closeBtn.addEventListener('touchend',e=>{e.preventDefault();e.stopPropagation();closeModal()},{passive:false});document.getElementById('modal').addEventListener('click',e=>{if(e.target===e.currentTarget)closeModal()});document.getElementById('modal').addEventListener('touchend',e=>{if(e.target===e.currentTarget)closeModal()},{passive:true});document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
 </script>
 <!-- Contador de visitas oficial: conserva el namespace y la clave existentes de ESOTERIC. -->
-<script src="https://counterapi.com/c.js" async></script>
+<script>
+  // Contador de visitas mediante JSONP: evita depender del widget visual externo.
+  window.esotericVisitCounterLoaded = function (data) {
+    var node = document.getElementById('visit-count');
+    if (!node) return;
+    if (data && typeof data.value === 'number') {
+      node.textContent = new Intl.NumberFormat('es-MX').format(data.value);
+      node.classList.add('ready');
+      node.setAttribute('aria-label', 'Visitas totales: ' + data.value);
+    } else {
+      node.textContent = '—';
+    }
+  };
+  (function () {
+    var node = document.getElementById('visit-count');
+    if (!node) return;
+    var script = document.createElement('script');
+    script.src = 'https://counterapi.com/api/esoteric-oraculo/view/site-visits?callback=esotericVisitCounterLoaded';
+    script.async = true;
+    script.onerror = function () {
+      node.textContent = '—';
+      node.setAttribute('title', 'El contador no pudo conectarse. Intenta de nuevo más tarde.');
+    };
+    document.head.appendChild(script);
+  })();
+</script>
 <script>
 (function(){
   const canvas=document.createElement('canvas');
